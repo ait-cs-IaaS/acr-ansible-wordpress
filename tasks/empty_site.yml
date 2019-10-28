@@ -1,0 +1,9 @@
+---
+# tasks file for wordpress_empty_site
+
+- name: Remove sample content
+  command: >
+    wp-cli --allow-root --path='{{ wp_apache_documentroot }}' 
+    site empty --yes --uploads 
+  when: wp_remove_samples
+  tags: [config]
