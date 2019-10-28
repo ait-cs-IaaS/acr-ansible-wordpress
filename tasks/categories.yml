@@ -1,0 +1,11 @@
+---
+# tasks file for wordpress_categories
+
+- name: Create category
+  command: >
+    wp-cli --allow-root --path='{{ wp_apache_documentroot }}' 
+    term create category '{{ item.name }}' 
+    --description='{{ item.description }}'
+  with_items: "{{ wp_categories }}"
+  when: wp_categories is defined
+  tags: [config]
