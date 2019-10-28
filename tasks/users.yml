@@ -1,0 +1,16 @@
+---
+# tasks file for wordpress_users
+
+- name: Create User
+  command: >
+    wp-cli --allow-root --path='{{ wp_apache_documentroot }}' 
+    user create '{{ item.name }}' '{{ item.email}}' 
+    --role='{{ item.role }}'
+    --display_name='{{ item.displayname }}'
+    --user_pass='{{ item.password }}'
+  with_items: "{{ wp_users }}"
+  when: wp_users is defined
+  register: check_users
+  changed_when: "'Success' in check_users.stdout"
+  failed_when: "'username is already registered' not in check_users.stderr"
+  tags: [config]
