@@ -1,14 +1,26 @@
 ---
 # defaults file for wordpress
 
-wp_user: wordpress
-wp_usergroup: wordpress
+wp_sys_user: 'wordpress_sys_user'
+wp_sys_usergroup: 'wordpress_sys_user'
 
-wp_apache_documentroot: /var/www/wordpress
+wp_admin_name: 'admin'
+wp_admin_email: 'admin@localhost.localdomain'
+wp_admin_password: 'secret'
+wp_title: 'Team Site'
+wp_host: 'localhost'
 
-wp_mysqldb_name: wordpress
-wp_mysqldb_user: wordpress
-wp_mysqldb_password: password
+wp_path: '/var/www/wordpress'
+wp_apache_documentroot: "{{ wp_path }}"
+wp_apache_hostname: 'team_site.com'
+wp_apache_alias: 'www.team_site.com'
+wp_apache_listen_port: 80
+wp_cli_dir: '/usr/local/bin/wp-cli'
+
+wp_mysqldb_root_password: 'rootsecret'
+wp_mysqldb_user: 'wordpress_user'
+wp_mysqldb_password: 'secret'
+wp_mysqldb_dbname: 'wordpress_db'
 wp_mysqldb_host: 'localhost'
 wp_mysqldb_charset: 'utf8'
 wp_mysqldb_collate: ''
@@ -23,3 +35,22 @@ wp_logged_in_salt: 'put your unique phrase here'
 wp_nonce_salt: 'put your unique phrase here'
 wp_table_prefix: 'wp_'
 wp_debug: 'false'
+
+
+wp_remove_samples: yes
+
+wp_themes:
+  - {name: 'twentythirteen', activate: true } 
+
+wp_plugins:
+  - {name: 'contact-form-7', activate: false }
+
+wp_users:
+  - {name: 'alice', displayname: 'alice', email: 'alice@wpuser.com', password: 'alice123', role: author}
+  - {name: 'bob', displayname: 'bob', email: 'bob@wpuser.com', password: 'bob123', role: author}
+
+wp_options:
+  - {name: 'woocommerce_api_enabled', command: 'update', value: 'yes'}
+
+wp_categories:
+  - {name: 'Category One', description: 'Sample category'}
