@@ -1,7 +1,8 @@
 ---
 # tasks file for wordpress
 
-- debug: msg="{{ _host_ip }}"
+
+# - debug: msg="{{ _host_ip }}"
 
 - name: Updating apt-Cache
   apt:
@@ -35,6 +36,8 @@
   tags: [install]
 
 
+# -----------------------------------------------------------------------
+# Install wordpress & configure apache
 # -----------------------------------------------------------------------
 
 
@@ -120,8 +123,10 @@
 
 
 # -----------------------------------------------------------------------
+# Create content  
+# -----------------------------------------------------------------------
 
-  
+
 - name: Install wp-core
   command: >
     wp-cli core install
@@ -135,15 +140,20 @@
   tags: [install]
     
 
-
 - include: empty_site.yml
   tags: [config]
 
 - include: themes.yml
   tags: [config]
 
+- include: plugins.yml
+  tags: [config]
+
 - include: users.yml
   tags: [config]
 
 - include: categories.yml
+  tags: [config]
+
+- include: posts_generated.yml
   tags: [config]
