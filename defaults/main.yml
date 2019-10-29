@@ -40,17 +40,21 @@ wp_debug: 'false'
 wp_remove_samples: yes
 
 wp_themes:
-  - {name: 'twentythirteen', activate: true } 
+  - {name: 'fblogging', activate: true } 
 
 wp_plugins:
   - {name: 'contact-form-7', activate: false }
 
 wp_users:
-  - {name: 'alice', displayname: 'alice', email: 'alice@wpuser.com', password: 'alice123', role: author}
-  - {name: 'bob', displayname: 'bob', email: 'bob@wpuser.com', password: 'bob123', role: author}
+  - {name: 'pangram', displayname: 'pangram', email: 'pangram@example.com', password: 'MBdGSd8rY2m4WI69', role: subscriber}
+  - {name: 'cicero', displayname: 'cicero', email: 'cicero@example.com', password: 'MBdGSd8rY2m4WI69', role: subscriber}
+  - {name: 'kafka', displayname: 'kafka', email: 'kafka@example.com', password: 'MBdGSd8rY2m4WI69', role: subscriber}
+  - {name: 'werther', displayname: 'werther', email: 'werther@example.com', password: 'MBdGSd8rY2m4WI69', role: subscriber}
 
 wp_options:
   - {name: 'woocommerce_api_enabled', command: 'update', value: 'yes'}
 
 wp_categories:
-  - {name: 'Category One', description: 'Sample category'}
+  - {name: 'Informative Posts', description: 'Posts with a lot of useful information'}
+  - {name: 'Business Posts', description: 'Posts about Business'}
+  - {name: 'Financial Posts', description: 'Posts about finances'}
