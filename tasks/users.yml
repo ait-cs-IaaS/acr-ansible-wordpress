@@ -11,6 +11,7 @@
   with_items: "{{ wp_users }}"
   when: wp_users is defined
   register: check_users
-  changed_when: "'Success' in check_users.stdout"
-  failed_when: "'username is already registered' not in check_users.stderr"
+  changed_when: "'Success' in check_users.stdout" 
+  failed_when:  "('username is already registered' not in check_users.stderr) and 
+                ('Success' not in check_users.stdout)"
   tags: [config]
