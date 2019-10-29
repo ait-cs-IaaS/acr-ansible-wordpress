@@ -1,0 +1,11 @@
+---
+# tasks file for wordpress_plugins
+
+- name: Install plugins
+  command: >
+    wp-cli --allow-root --path='{{ wp_apache_documentroot }}' 
+    plugin install {{ item.name }} 
+    --activate
+  with_items: "{{ wp_plugins }}"
+  when: wp_plugins is defined
+  tags: [config]
