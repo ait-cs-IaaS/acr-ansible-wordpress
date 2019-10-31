@@ -2,6 +2,9 @@
 # tasks file for wordpress
 
 
+# - include: users.yml
+#   tags: [config]
+
 # - debug: msg="{{ _host_ip }}"
 
 - name: Updating apt-Cache
@@ -113,13 +116,6 @@
     group: root
     mode: 0755
   tags: [install]
-
-
-- name: check install
-  command: wp-cli --info
-  register: info
-
-- debug: msg="{{ info.stdout }}"
 
 
 # -----------------------------------------------------------------------
