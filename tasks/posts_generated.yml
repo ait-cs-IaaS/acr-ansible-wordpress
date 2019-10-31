@@ -1,23 +1,17 @@
 ---
 # tasks file for wordpress_posts_generated
 
-- name: Install curl
-  package:
-      name: [curl]
-      state: present
-  tags: [config]
 
-
-- name: Generate posts
+- name: Create posts
   shell: >
     wp-cli --allow-root --path='{{ wp_apache_documentroot }}' 
-    post create --post_content="$(curl http://loripsum.net/api/5)" --count=10
-    --post_author='{{ item.name }}'
-    --post_category='{{ (wp_categories|length) | random + 2 }}'
-    --post_title="$(curl --silent https://loripsum.net/api/1/short/headers | grep -E "<h1>(.*?)</h1>" | cut -d ">" -f2 | cut -d "<" -f1)"
+    post create 
+    --post_content='{{ item.content }}'
+    --post_author='{{ item.author }}'
+    --post_category='{{ item.category }}'
+    --post_title='{{ item.title }}'
+    --post_date='{{ item.date }}'
     --post_status="publish"
-  with_items: 
-    - "{{ wp_users }}"
-    - "{{ wp_users }}" # in order to run this task twice
-  when: wp_users is defined
+  with_items: "{{ wp_posts }}"
+  when: wp_posts is defined
   tags: [config]
