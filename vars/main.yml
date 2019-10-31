@@ -1,2 +1,74 @@
 ---
 # vars file for wordpress
+
+wp_users:
+  - {name: 'control', displayname: 'control', email: 'control@example.com', password: 'MBdGSd8rY2m4WI69', role: administrator}
+  - {name: 'rmach', displayname: 'rmach', email: 'rmach@example.com', password: 'MBdGSd8rY2m4WI69', role: administrator}
+  - {name: 'tec', displayname: 'tec', email: 'tec@example.com', password: 'MBdGSd8rY2m4WI69', role: administrator}
+  - {name: 'wwais', displayname: 'wwais', email: 'wwais@example.com', password: 'MBdGSd8rY2m4WI69', role: administrator}
+  - {name: 'weibeck', displayname: 'weibeck', email: 'weibeck@example.com', password: 'MBdGSd8rY2m4WI69', role: administrator}
+  - {name: 'mweiss', displayname: 'mweiss', email: 'mweiss@example.com', password: 'MBdGSd8rY2m4WI69', role: editor}
+
+
+# select User to change:
+#  - id_id            OR 
+#  - id_name          OR
+#  - id_email         OR
+
+# Field to change:
+#  - new_displayname  AND/OR
+#  - new_email        AND/OR
+#  - new_password     AND/OR
+#  - new_role         AND/OR
+
+wp_users_update:
+  - {id_name: 'control', new_displayname: 'controlXXX' }
+  - {id_email: 'rmach@example.com', new_displayname: 'rmachXXX' }
+  - {id_email: 'tec@example.com', new_email: 'neueEmail@example.com' }
+  - {id_id: 6, new_email: '3333333@example.com', new_role: 'editor' }
+
+  
+
+wp_categories:
+  - {name: 'Pressemeldungen', description: 'Pressemeldungen der SeiberOrg'}
+  - {name: 'Firmen News', description: 'Interne News und Infos'}
+
+
+wp_posts: 
+  - title: "SeiberOrg neues Cyber Center"
+    author: mweiss
+    category: "Pressemeldungen"
+    date: "2019-02-26 12:30"
+    content: 
+      "In der heutigen Zeit haben Umwelt und Nachhaltigkeit eine ganz besondere Bedeutung.
+      Das dieses Jahr neu eröffnete SeiberOrg Cyber Center war das erste Center, das komplett energieneutral und selbstversorgend ist.
+      Nach der erfolgreichen Eröffnung dieses Centers planen wir jetzt im Laufe der nächste 5 Jahre alle SeiberOrg Standorte mit ähnlichen Konzepten umweltschonender und nachhaltiger zu machen.
+
+      Vinzent Wallner aus unserem Vorstand hatte dazu folgendes zu sagen:
+      \"Wir konnten im letzten Jahre hier viele Erfahrungen sammeln, die uns helfen werden, unsere anderen Cyber Center zu optimieren.
+      Das neue Center ist für uns ein Proof of Concept, das wir jetzt auf unsere anderen Standorte auch anwenden werden.
+      Die Umwelt und Nachhaltigkeit stehen bei uns ganz vorne.\""
+
+  - title: "SeiberOrg an vorderster Cyber Front!"
+    author: mweiss
+    category: "Pressemeldungen"
+    date: "2019-03-4 14:33"
+    content: 
+      "Die SeiberOrganisation strebt stets an sich zu verbessern.
+      Deshalb nehmen wir an viele initiativen Teil und fördern auch die Forschung.
+      Auch dieses Jahr haben wir bei der Cyber initiative YEAR3k mitgewirkt.
+      Im Zuge, dessen können wir verkünden, dass wir zur besten Cyber Firma in unserer Branche gewählt wurden.
+      Wir die SeiberOrg werden uns natürlich jetzt erst recht noch weiter verbessern!"
+
+  - title: "Sport Termine!"
+    author: wwais
+    category: "Firmen News"
+    date: "2019-03-1 12:30"
+    content:
+      "Als SeiberOrg sind wir sportlich engagiert und nehmen immer wieder gerne an Marathons Teil!
+
+      Der Nächste Termin ist der CyberRun in 2 Wochen und danach gibt es nächsten Monat auch wieder den beliebten Netzlauf.
+
+      Meldet euch bitte bei (abach@organisation.cyberrange.at) für Anmeldung und Koordination der Läufer.
+
+      Stay Fit and Hydrated!"
