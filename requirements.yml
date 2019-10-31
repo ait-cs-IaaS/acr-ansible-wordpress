@@ -1,0 +1,6 @@
+---
+- src: git@git-service.ait.ac.at:sct-cyberrange/ansible-roles/apache2.git
+  path: /etc/ansible/roles/cyber-range/apache2
+  scm: git
+  version: master
+  name: apache2
