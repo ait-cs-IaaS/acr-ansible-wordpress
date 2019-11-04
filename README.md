@@ -25,27 +25,49 @@ There are four sections of variables:
 
 | Variable name                   | Type    | Default | Description                                             |
 | ------------------------------- | ------- | ------- | ------------------------------------------------------- |
-| wp_sys_user | string | www-data | User owning the wordpress files on server |
-| wp_sys_usergroup | string | www-data | Usergroup owning the wordpress files on server |
-| wp_cli_dir | string | /usr/local/bin/wp-cli | Path to the wp-cli installation |
-| libapache2_mod_version | string | libapache2-mod-php7.0 | Passed to apach2 role. Use php7.2 for compatibility with Ubuntu 18.04 |
+| wp_sys_user | string | 'www-data' | User owning the wordpress files on server |
+| wp_sys_usergroup | string | 'www-data' | Usergroup owning the wordpress files on server |
+| wp_cli_dir | string | '/usr/local/bin/wp-cli' | Path to the wp-cli installation |
+| libapache2_mod_version | string | 'libapache2-mod-php7.0' | Passed to apach2 role. Use php7.2 for compatibility with Ubuntu 18.04 |
 
 ### Wordpress
 These variables contain the admin user credentials, the Site Title, Tagline etc.
 
 | Variable name                   | Type    | Default | Description                                             |
 | ------------------------------- | ------- | ------- | ------------------------------------------------------- |
-| wp_admin_name | string | admin | Adminuser for e.g. wp-admin |
-| wp_admin_email | string | admin@localhost.localdomain | Admin contact email address |
-| wp_admin_password | string | secret | Password for admin login |
-| wp_title | string | Team Site | Title of wordpress page |
-| wp_tagline | string | Informationsplatform | Subtitle of wordpress page |
-| wp_host | string | localhost | wp-database location |
+| wp_admin_name | string | 'admin' | Adminuser for e.g. wp-admin |
+| wp_admin_email | string | 'admin@localhost.localdomain' | Admin contact email address |
+| wp_admin_password | string | 'secret' | Password for admin login |
+| wp_title | string | 'Team Site' | Title of wordpress page |
+| wp_tagline | string | 'Informationsplatform' | Subtitle of wordpress page |
+| wp_host | string | 'localhost' | wp-database location |
 | wp_host_ip | string | (N/A) | IP address for wp-installation |
+| wp_apache_hostname | string | 'team_site' | vhost name and foldername in /var/www |
+| wp_apache_alias | string | 'www.team_site.com' | vhost alias |
+| wp_path | string | '/var/www/{{ wp_apache_hostname }}' | Installation path to wordpress |
 
-| wp_apache_hostname | string | team_site | vhost name and foldername in /var/www |
-| wp_apache_alias | string | www.team_site.com | vhost alias |
-| wp_path | string | /var/www/{{ wp_apache_hostname }} | Installation path to wordpress |
+### wp-config
+Variables required for the wp-config file.
+
+| Variable name                   | Type    | Default | Description                                             |
+| ------------------------------- | ------- | ------- | ------------------------------------------------------- |
+| wp_mysqldb_user | string | 'wordpress_user' | database user |
+| wp_mysqldb_password | string | 'secret' | database user's password |
+| wp_mysqldb_dbname | string | 'wordpress_db' | database name |
+| wp_mysqldb_host | string | 'localhost' | database host |
+| wp_mysqldb_charset | string | 'utf8' | Charset |
+| wp_mysqldb_collate | string | (N/A) | -- |
+| wp_auth_key | string | 'put your unique phrase here' | -- |
+| wp_secure_auth_key | string | 'put your unique phrase here' | -- |
+| wp_logged_in_key | string | 'put your unique phrase here' | -- |
+| wp_nonce_key | string | 'put your unique phrase here' | -- |
+| wp_auth_salt | string | 'put your unique phrase here' | -- |
+| wp_secure_auth_salt | string | 'put your unique phrase here' | -- |
+| wp_logged_in_salt | string | 'put your unique phrase here' | -- |
+| wp_nonce_salt | string | 'put your unique phrase here' | -- |
+| wp_table_prefix | string | 'wp_' | -- |
+| wp_debug | string | 'false' | -- |
+
 
 
 Dependencies
