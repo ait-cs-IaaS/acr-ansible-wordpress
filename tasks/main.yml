@@ -53,24 +53,35 @@
 # -----------------------------------------------------------------------
 
 
+- name: Check WordPress installation
+  stat: 
+    path: "{{ wp_path }}/wp-settings.php"
+  register: wp_files_exist
+
+
 - name: Download WordPress  
   get_url: 
     url: https://wordpress.org/latest.tar.gz 
     dest: /tmp/wordpress.tar.gz
     validate_certs: no
+  when: wp_files_exist == false
 
 
 - name: Extract WordPress  
   unarchive: 
     src: /tmp/wordpress.tar.gz 
     dest: /tmp/
-    copy: no 
+    copy: no
+  when: wp_files_exist == false 
+
 
 - name: Copy wordpress files
   copy: 
     remote_src: True
     src: /tmp/wordpress/
     dest: "{{ wp_path }}" 
+  when: wp_files_exist == false
+
 
 - name: Remove tmp files
   file:
@@ -79,6 +90,7 @@
   with_items:
     - "/tmp/wordpress"
     - "/tmp/wordpress.tar.gz"
+  when: wp_files_exist == false
 
 
 - name: Wordpress config
@@ -91,8 +103,8 @@
 - name: Change ownership of installation directory
   file: 
     path: "{{ wp_path }}"
-    owner: www-data 
-    group: www-data  
+    owner: "{{ wp_sys_user }}" 
+    group: "{{ wp_sys_usergroup }}" 
     state: directory 
     recurse: yes 
     setype: httpd_sys_content_t
