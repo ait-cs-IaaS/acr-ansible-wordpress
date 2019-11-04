@@ -8,12 +8,13 @@ wp_admin_name: 'admin'
 wp_admin_email: 'admin@localhost.localdomain'
 wp_admin_password: 'secret'
 wp_title: 'Team Site'
+wp_tagline: 'Informationsplatform'
 wp_host: 'localhost'
+wp_host_ip: '10.0.0.11' # IP for wp-install
 
-wp_path: '/var/www/wordpress'
-wp_apache_documentroot: "{{ wp_path }}"
-wp_apache_hostname: 'team_site.com'
+wp_apache_hostname: 'team_site'
 wp_apache_alias: 'www.team_site.com'
+wp_path: '/var/www/{{ wp_apache_hostname }}'
 wp_apache_listen_port: 80
 wp_cli_dir: '/usr/local/bin/wp-cli'
 
