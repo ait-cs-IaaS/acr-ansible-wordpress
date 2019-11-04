@@ -1,8 +1,8 @@
 ---
 # defaults file for wordpress
 
-wp_sys_user: 'wordpress_sys_user'
-wp_sys_usergroup: 'wordpress_sys_user'
+wp_sys_user: 'www-data'
+wp_sys_usergroup: 'www-data'
 
 wp_admin_name: 'admin'
 wp_admin_email: 'admin@localhost.localdomain'
