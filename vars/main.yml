@@ -1,6 +1,8 @@
 ---
 # vars file for wordpress
 
+libapache2-mod-version: 'libapache2-mod-php7.2' # Ubuntu 18.04
+
 wp_users:
   - {name: 'control', displayname: 'control', email: 'control@example.com', password: 'MBdGSd8rY2m4WI69', role: administrator}
   - {name: 'rmach', displayname: 'rmach', email: 'rmach@example.com', password: 'MBdGSd8rY2m4WI69', role: administrator}
