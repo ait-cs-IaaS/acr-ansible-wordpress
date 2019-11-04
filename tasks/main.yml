@@ -33,7 +33,7 @@
     apply:
       tags: [install]
   vars: 
-    apache2_packages: libapache2-mod-php7.2 # Ubuntu 18.04
+    apache2_packages: "{{ libapache2-mod-version }}"
     apache2_vhosts:
       - name: "{{ wp_apache_hostname }}"
         aliases: "{{ wp_apache_alias }}"
