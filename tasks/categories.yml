@@ -3,7 +3,7 @@
 
 - name: Create category
   command: >
-    wp-cli --allow-root --path='{{ wp_apache_documentroot }}' 
+    wp-cli --allow-root --path='{{ wp_path }}' 
     term create category '{{ item.name }}' 
     --description='{{ item.description }}'
   with_items: "{{ wp_categories }}"

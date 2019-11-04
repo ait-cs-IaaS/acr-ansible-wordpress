@@ -4,7 +4,7 @@
 
 - name: Create posts
   shell: >
-    wp-cli --allow-root --path='{{ wp_apache_documentroot }}' 
+    wp-cli --allow-root --path='{{ wp_path }}' 
     post create 
     --post_content='{{ item.content }}'
     --post_author='{{ item.author }}'

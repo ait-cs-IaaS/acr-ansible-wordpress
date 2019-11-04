@@ -4,7 +4,7 @@
 
 - name: Create User
   command: >
-    wp-cli --allow-root --path='{{ wp_apache_documentroot }}' 
+    wp-cli --allow-root --path='{{ wp_path }}' 
     user create 
     '{{ item.name }}' 
     '{{ item.email}}' 
@@ -22,7 +22,7 @@
 
 - name: Update Users
   command: >
-    wp-cli --allow-root --path='{{ wp_apache_documentroot }}' 
+    wp-cli --allow-root --path='{{ wp_path }}' 
     user update 
     {{ ( ('{}'.format(item.id_id)) if (item.id_id is defined) else ('') ) }}
     {{ ( ('{}'.format(item.id_name)) if (item.id_name is defined) else ('') ) }}

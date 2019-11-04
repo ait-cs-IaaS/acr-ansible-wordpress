@@ -3,7 +3,7 @@
 
 - name: Install plugins
   command: >
-    wp-cli --allow-root --path='{{ wp_apache_documentroot }}' 
+    wp-cli --allow-root --path='{{ wp_path }}' 
     plugin install {{ item.name }} 
     --activate
   with_items: "{{ wp_plugins }}"

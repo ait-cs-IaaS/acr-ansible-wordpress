@@ -3,7 +3,7 @@
 
 - name: Remove sample content
   command: >
-    wp-cli --allow-root --path='{{ wp_apache_documentroot }}' 
+    wp-cli --allow-root --path='{{ wp_path }}' 
     site empty --yes --uploads 
   when: wp_remove_samples
   tags: [config]

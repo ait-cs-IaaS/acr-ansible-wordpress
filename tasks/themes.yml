@@ -3,14 +3,14 @@
 
 - name: Install theme
   command: >
-    wp-cli --allow-root --path='{{ wp_apache_documentroot }}' theme install {{ item.name }}
+    wp-cli --allow-root --path='{{ wp_path }}' theme install {{ item.name }}
   with_items: "{{ wp_themes }}"
   when: wp_themes is defined
   tags: [config]
 
 - name: Check install
   command: >
-    wp-cli --allow-root --path='{{ wp_apache_documentroot }}' theme is-installed {{ item.name }}
+    wp-cli --allow-root --path='{{ wp_path }}' theme is-installed {{ item.name }}
   changed_when: false
   with_items: "{{ wp_themes }}"
   when: wp_themes is defined
@@ -18,7 +18,7 @@
 
 - name: Activate theme
   command: >
-    wp-cli --allow-root --path='{{ wp_apache_documentroot }}' theme activate {{ item.name }}
+    wp-cli --allow-root --path='{{ wp_path }}' theme activate {{ item.name }}
   register: activated_theme
   changed_when: "'Success: Switched to' in activated_theme.stdout"
   with_items: "{{ wp_themes }}"
