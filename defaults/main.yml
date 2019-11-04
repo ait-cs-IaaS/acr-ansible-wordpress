@@ -3,6 +3,7 @@
 
 wp_sys_user: 'www-data'
 wp_sys_usergroup: 'www-data'
+wp_cli_dir: '/usr/local/bin/wp-cli'
 
 wp_admin_name: 'admin'
 wp_admin_email: 'admin@localhost.localdomain'
@@ -15,10 +16,7 @@ wp_host_ip: '10.0.0.11' # IP for wp-install
 wp_apache_hostname: 'team_site'
 wp_apache_alias: 'www.team_site.com'
 wp_path: '/var/www/{{ wp_apache_hostname }}'
-wp_apache_listen_port: 80
-wp_cli_dir: '/usr/local/bin/wp-cli'
 
-wp_mysqldb_root_password: 'rootsecret'
 wp_mysqldb_user: 'wordpress_user'
 wp_mysqldb_password: 'secret'
 wp_mysqldb_dbname: 'wordpress_db'
@@ -43,19 +41,15 @@ wp_remove_samples: yes
 wp_themes:
   - {name: 'fblogging', activate: true } 
 
-wp_plugins:
-  - {name: 'contact-form-7', activate: false }
+#wp_plugins:
+#  - {name: 'x', activate: true/false }
 
-wp_users:
-  - {name: 'pangram', displayname: 'pangram', email: 'pangram@example.com', password: 'MBdGSd8rY2m4WI69', role: subscriber}
-  - {name: 'cicero', displayname: 'cicero', email: 'cicero@example.com', password: 'MBdGSd8rY2m4WI69', role: subscriber}
-  - {name: 'kafka', displayname: 'kafka', email: 'kafka@example.com', password: 'MBdGSd8rY2m4WI69', role: subscriber}
-  - {name: 'werther', displayname: 'werther', email: 'werther@example.com', password: 'MBdGSd8rY2m4WI69', role: subscriber}
+#wp_users:
+#  - {name: 'x', displayname: 'x', email: 'x', password: 'x', role: x}
 
-wp_options:
-  - {name: 'woocommerce_api_enabled', command: 'update', value: 'yes'}
+#wp_users_update:
+#  - {id_id: 'x' || id_name: 'x' || id_email: 'x' &&
+#     new_displayname: 'x' || new_email: 'x' || new_password: 'x' || new_role: 'x'}
 
-wp_categories:
-  - {name: 'Informative Posts', description: 'Posts with a lot of useful information'}
-  - {name: 'Business Posts', description: 'Posts about Business'}
-  - {name: 'Financial Posts', description: 'Posts about finances'}
+#wp_categories:
+#  - {name: 'x', description: 'x'}
