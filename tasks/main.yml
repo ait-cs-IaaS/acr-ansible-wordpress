@@ -2,11 +2,6 @@
 # tasks file for wordpress
 
 
-# - include: users.yml
-#   tags: [config]
-
-# - debug: msg="{{ _host_ip }}"
-
 - name: Updating apt-Cache
   apt:
     update_cache: yes
@@ -31,6 +26,7 @@
       }
   tags: [install]
 
+
 - name: Install apache2
   include_role:
     name: apache2
@@ -38,15 +34,11 @@
       tags: [install]
   vars: 
     apache2_packages: libapache2-mod-php7.2 # Ubuntu 18.04
+    apache2_vhosts:
+      - name: "{{ wp_apache_hostname }}"
+        aliases: "{{ wp_apache_alias }}"
+        http: true
   tags: [install]
-
-
-# - name: Install MySQL
-#   include_role:
-#     name: mysql
-#     apply:
-#       tags: [install]
-#   tags: [install]
 
 
 - name: Install required packages
@@ -71,26 +63,22 @@
 - name: Extract WordPress  
   unarchive: 
     src: /tmp/wordpress.tar.gz 
-    dest: /var/www/ 
+    dest: /tmp/
     copy: no 
 
+- name: Copy wordpress files
+  copy: 
+    remote_src: True
+    src: /tmp/wordpress/
+    dest: "{{ wp_path }}" 
 
-- name: Copy apache vhost.conf
-  template: 
-    src: apache-vhost.conf.j2 
-    dest: /etc/apache2/sites-available/000-default.conf 
-    owner: root 
-    group: root 
-    mode: 0644
-
-- name: Symlink vhost.conf from sites-available to sites-enabled
-  file: 
-    state: link 
-    src: /etc/apache2/sites-available/000-default.conf
-    dest: /etc/apache2/sites-enabled/000-default.conf 
-    owner: root 
-    group: root 
-    mode: 0644
+- name: Remove tmp files
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "/tmp/wordpress"
+    - "/tmp/wordpress.tar.gz"
 
 
 - name: Wordpress config
@@ -145,13 +133,18 @@
     wp-cli core install
     --allow-root 
     --path='{{ wp_path }}'
-    --url='{{ _host_ip }}'  
+    --url='{{ wp_host_ip }}'  
     --title='{{ wp_title }}'
     --admin_name='{{ wp_admin_name }}'
     --admin_email='{{ wp_admin_email }}'
     --admin_password='{{ wp_admin_password }}'
   tags: [install]
-    
+
+- name: Update tagline
+  command: >
+    wp-cli --allow-root --path='{{ wp_path }}' 
+    option update blogdescription '{{ wp_tagline }}'
+  tags: [config]
 
 - include: empty_site.yml
   tags: [config]
