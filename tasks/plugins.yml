@@ -1,6 +1,13 @@
 ---
 # tasks file for wordpress_plugins
 
+- name: Update plugins
+  command: >
+    wp-cli --allow-root --path='{{ wp_path }}' 
+    plugin update --all
+  tags: [config]
+
+
 - name: Install plugins
   command: >
     wp-cli --allow-root --path='{{ wp_path }}' 
