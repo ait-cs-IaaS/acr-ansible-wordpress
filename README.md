@@ -132,6 +132,12 @@ Example Playbook
     - wordpress
 ```
 
+License
+-------
+
+MIT
+
+
 Author Information
 ------------------
 
