@@ -1,9 +1,17 @@
 ---
 # defaults file for wordpress
 
+# -----------------------------------------------------------------------
+# Misc 
+# -----------------------------------------------------------------------
+
 wp_sys_user: 'www-data'
 wp_sys_usergroup: 'www-data'
 wp_cli_dir: '/usr/local/bin/wp-cli'
+
+# -----------------------------------------------------------------------
+# Wordpress 
+# -----------------------------------------------------------------------
 
 wp_admin_name: 'admin'
 wp_admin_email: 'admin@localhost.localdomain'
@@ -16,6 +24,10 @@ wp_host_ip: '10.0.0.11' # IP for wp-install
 wp_apache_hostname: 'team_site'
 wp_apache_alias: 'www.team_site.com'
 wp_path: '/var/www/{{ wp_apache_hostname }}'
+
+# -----------------------------------------------------------------------
+# wp-config 
+# -----------------------------------------------------------------------
 
 wp_mysqldb_user: 'wordpress_user'
 wp_mysqldb_password: 'secret'
@@ -35,6 +47,9 @@ wp_nonce_salt: 'put your unique phrase here'
 wp_table_prefix: 'wp_'
 wp_debug: 'false'
 
+# -----------------------------------------------------------------------
+# Wordpress Content 
+# -----------------------------------------------------------------------
 
 wp_remove_samples: yes
 
@@ -53,3 +68,10 @@ wp_themes:
 
 #wp_categories:
 #  - {name: 'x', description: 'x'}
+
+# wp_posts: 
+#   - title: 'x'
+#     author: 'x'
+#     category: 'x'
+#     date: 'yyyy-dd-mm hh:mm'
+#     content: 'x'
