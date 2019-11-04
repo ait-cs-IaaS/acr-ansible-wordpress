@@ -113,8 +113,8 @@ Dependencies
 ------------
 
 This role utilizes two roles from [sct-cyberrange](https://git-service.ait.ac.at/sct-cyberrange/ansible-roles/):
-- Role [apache2](git@git-service.ait.ac.at:sct-cyberrange/ansible-roles/apache2.git)
-- Role [mariadb](git@git-service.ait.ac.at:sct-cyberrange/ansible-roles/mariadb.git)
+- [apache2](https://git-service.ait.ac.at/sct-cyberrange/ansible-roles/apache2.git)
+- [mariadb](https://git-service.ait.ac.at/sct-cyberrange/ansible-roles/mariadb.git)
 
 
 Example Playbook
@@ -132,12 +132,7 @@ Example Playbook
     - wordpress
 ```
 
-License
--------
-
-BSD
-
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+This role was created in 2019 by Lenhard Reuter
