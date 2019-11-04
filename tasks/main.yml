@@ -14,6 +14,23 @@
   tags: [install]
 
 
+- name: Install MariaDB
+  include_role:
+    name: mariadb
+    apply:
+      tags: [install]
+  vars: 
+    mariadb_databases: 
+    - name: "{{ wp_mysqldb_dbname }}"
+    mariadb_users:
+    - {
+      name: "{{ wp_mysqldb_user }}",
+      host: "{{ wp_host }}",
+      password: "{{ wp_mysqldb_password }}",
+      privileges: "{{ wp_mysqldb_dbname }}.*:ALL,GRANT"
+      }
+  tags: [install]
+
 - name: Install apache2
   include_role:
     name: apache2
@@ -24,12 +41,12 @@
   tags: [install]
 
 
-- name: Install MySQL
-  include_role:
-    name: mysql
-    apply:
-      tags: [install]
-  tags: [install]
+# - name: Install MySQL
+#   include_role:
+#     name: mysql
+#     apply:
+#       tags: [install]
+#   tags: [install]
 
 
 - name: Install required packages

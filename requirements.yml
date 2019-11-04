@@ -4,3 +4,9 @@
   scm: git
   version: master
   name: apache2
+
+- src: git@git-service.ait.ac.at:sct-cyberrange/ansible-roles/mariadb.git
+  path: /etc/ansible/roles/cyber-range/mariadb
+  scm: git
+  version: master
+  name: mariadb
