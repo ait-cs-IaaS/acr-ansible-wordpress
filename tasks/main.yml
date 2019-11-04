@@ -57,14 +57,23 @@
   stat: 
     path: "{{ wp_path }}/wp-settings.php"
   register: wp_files_exist
+  tags: [install]
 
+- debug: msg="WordPress is not installed. Downloading ..."
+  when: wp_files_exist.stat.exists == false
+  tags: [install]
+
+- debug: msg="WordPress is installed. Skipping download ..."
+  when: wp_files_exist.stat.exists == true
+  tags: [install]
 
 - name: Download WordPress  
   get_url: 
     url: https://wordpress.org/latest.tar.gz 
     dest: /tmp/wordpress.tar.gz
     validate_certs: no
-  when: wp_files_exist == false
+  when: wp_files_exist.stat.exists == false
+  tags: [install]
 
 
 - name: Extract WordPress  
@@ -72,7 +81,8 @@
     src: /tmp/wordpress.tar.gz 
     dest: /tmp/
     copy: no
-  when: wp_files_exist == false 
+  when: wp_files_exist.stat.exists == false
+  tags: [install]
 
 
 - name: Copy wordpress files
@@ -80,7 +90,8 @@
     remote_src: True
     src: /tmp/wordpress/
     dest: "{{ wp_path }}" 
-  when: wp_files_exist == false
+  when: wp_files_exist.stat.exists == false
+  tags: [install]
 
 
 - name: Remove tmp files
@@ -90,7 +101,8 @@
   with_items:
     - "/tmp/wordpress"
     - "/tmp/wordpress.tar.gz"
-  when: wp_files_exist == false
+  when: wp_files_exist.stat.exists == false
+  tags: [install]
 
 
 - name: Wordpress config
@@ -108,19 +120,6 @@
     state: directory 
     recurse: yes 
     setype: httpd_sys_content_t
-
-
-- name: Create directories
-  file:
-    path: "{{ wp_path }}/{{ item }}"
-    state: directory
-    owner: root
-    group: root
-    mode: 0755
-  with_items:
-    - "themes"
-    - "plugins"
-    - "users"
   tags: [install]
 
 
