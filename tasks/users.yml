@@ -20,13 +20,27 @@
   tags: [config]
 
 
+# - name: Update Users
+#   command: >
+#     wp-cli --allow-root --path='{{ wp_path }}' 
+#     user update 
+#     {{ ( ('{}'.format(item.id_id)) if (item.id_id is defined) else ('') ) }}
+#     {{ ( ('{}'.format(item.id_name)) if (item.id_name is defined) else ('') ) }}
+#     {{ ( ('{}'.format(item.id_email)) if (item.id_email is defined) else ('') ) }}
+#     {{ ( ('{}{}'.format('--user_email=', item.new_email)) if (item.new_email is defined) else ('') ) }}
+#     {{ ( ('{}{}'.format('--role=', item.new_role)) if (item.new_role is defined) else ('') ) }}
+#     {{ ( ('{}{}'.format('--display_name=', item.new_displayname)) if (item.new_displayname is defined) else ('') ) }}
+#     {{ ( ('{}{}'.format('--user_pass=', item.new_password)) if (item.new_password is defined) else ('') ) }}
+#   with_items: "{{ wp_users_update }}"
+#   when: wp_users_update is defined
+#   tags: [config]
+
+
 - name: Update Users
   command: >
     wp-cli --allow-root --path='{{ wp_path }}' 
     user update 
-    {{ ( ('{}'.format(item.id_id)) if (item.id_id is defined) else ('') ) }}
-    {{ ( ('{}'.format(item.id_name)) if (item.id_name is defined) else ('') ) }}
-    {{ ( ('{}'.format(item.id_email)) if (item.id_email is defined) else ('') ) }}
+    {{ item.id_id|default(item.id_name,true)|default(item.id_email, true) }}
     {{ ( ('{}{}'.format('--user_email=', item.new_email)) if (item.new_email is defined) else ('') ) }}
     {{ ( ('{}{}'.format('--role=', item.new_role)) if (item.new_role is defined) else ('') ) }}
     {{ ( ('{}{}'.format('--display_name=', item.new_displayname)) if (item.new_displayname is defined) else ('') ) }}
@@ -35,3 +49,4 @@
   when: wp_users_update is defined
   tags: [config]
 
+  
