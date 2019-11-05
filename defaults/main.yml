@@ -13,6 +13,7 @@ wp_cli_dir: '/usr/local/bin/wp-cli'
 # Wordpress 
 # -----------------------------------------------------------------------
 
+wp_version: 'latest' #'5.2.1'
 wp_admin_name: 'admin'
 wp_admin_email: 'admin@localhost.localdomain'
 wp_admin_password: 'secret'
