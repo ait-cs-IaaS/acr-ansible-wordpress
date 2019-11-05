@@ -43,7 +43,7 @@
 
 - name: Install required packages
   package:
-      name: [php7.2, php7.2-mysql, php7.2-gd, php7.2-ssh2]
+      name: [php7.2, php7.2-mysql, php7.2-gd, php7.2-ssh2, curl]
       state: present
   tags: [install]
 
@@ -54,25 +54,49 @@
 
 
 - name: Check WordPress installation
-  stat: 
-    path: "{{ wp_path }}/wp-settings.php"
-  register: wp_files_exist
+  shell: grep -oE "wp_version = '(.?*)';" wp-includes/version.php | cut -d "'" -f2
+  args:
+    chdir: "{{ wp_path}}"
+  register: wp_current_version
   tags: [install]
+
+- name: Check latest Wordpress version available
+  shell: curl -s 'https://api.wordpress.org/core/version-check/1.7/' | grep -Po '"version":.*?",' | head -n 1 | cut -d '"' -f4
+  register: wp_latest_available
+  args:
+    warn: false
+  when: wp_version == 'latest'
+  tags: [install]
+
+- set_fact: 
+    wp_control_version: "{{ wp_version if (wp_version != 'latest') else (wp_latest_available.stdout) }}"
+
+- set_fact: 
+    wp_install: "{{ false if (wp_current_version.stdout == wp_control_version) else (true) }}"
 
 - debug: msg="WordPress is not installed. Downloading ..."
-  when: wp_files_exist.stat.exists == false
+  when: wp_current_version.stdout|length < 1
   tags: [install]
 
-- debug: msg="WordPress is installed. Skipping download ..."
-  when: wp_files_exist.stat.exists == true
+- debug: msg="WordPress {{ wp_current_version.stdout }} is installed."
+  when: wp_current_version.stdout|length > 0
   tags: [install]
 
-- name: Download WordPress  
+
+- name: Download WordPress {{ wp_version }} 
   get_url: 
-    url: https://wordpress.org/latest.tar.gz 
+    url: "{{ 'https://wordpress.org/latest.tar.gz' if (item == 'latest') else ( 'https://wordpress.org/wordpress-{}.tar.gz'.format(item) ) }}" 
     dest: /tmp/wordpress.tar.gz
     validate_certs: no
-  when: wp_files_exist.stat.exists == false
+  with_items: "{{ wp_version }}"
+  when: wp_install 
+  tags: [install]
+
+- name: Remove current version
+  file:
+    state: absent
+    path: "{{ wp_path }}/" 
+  when: wp_install 
   tags: [install]
 
 
@@ -81,7 +105,7 @@
     src: /tmp/wordpress.tar.gz 
     dest: /tmp/
     copy: no
-  when: wp_files_exist.stat.exists == false
+  when: wp_install 
   tags: [install]
 
 
@@ -90,7 +114,7 @@
     remote_src: True
     src: /tmp/wordpress/
     dest: "{{ wp_path }}" 
-  when: wp_files_exist.stat.exists == false
+  when: wp_install 
   tags: [install]
 
 
@@ -101,7 +125,7 @@
   with_items:
     - "/tmp/wordpress"
     - "/tmp/wordpress.tar.gz"
-  when: wp_files_exist.stat.exists == false
+  when: wp_install 
   tags: [install]
 
 
