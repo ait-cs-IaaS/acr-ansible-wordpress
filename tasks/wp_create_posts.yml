@@ -1,5 +1,5 @@
 ---
-# tasks file for wordpress_posts_generated
+# tasks file for wordpress_create_posts
 
 
 - name: Create posts
