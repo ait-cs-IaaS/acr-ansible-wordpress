@@ -1,6 +1,8 @@
 ---
 # vars file for wordpress
 
+# Example config
+
 libapache2_mod_version: 'libapache2-mod-php7.2' # Ubuntu 18.04
 
 wp_users:
@@ -24,10 +26,10 @@ wp_users:
 #  - new_role         AND/OR
 
 wp_users_update:
-  - {id_name: 'control', new_displayname: 'controlXXX' }
-  - {id_email: 'rmach@example.com', new_displayname: 'rmachXXX' }
-  - {id_email: 'tec@example.com', new_email: 'neueEmail@example.com' }
-  - {id_id: 6, new_email: '3333333@example.com', new_role: 'editor' }
+  - {id_name: 'control', new_displayname: 'new_control_display_name' }
+  - {id_email: 'rmach@example.com', new_displayname: 'new_rmach_display_name' }
+  - {id_email: 'tec@example.com', new_email: 'new_email_tec@example.com' }
+  - {id_id: 6, new_email: 'new_email_id6@example.com', new_role: 'editor' }
 
   
 
