@@ -20,7 +20,7 @@
     mariadb_users:
     - {
       name: "{{ wp_mysqldb_user }}",
-      host: "{{ wp_host }}",
+      host: "{{ wp_mysqldb_host }}",
       password: "{{ wp_mysqldb_password }}",
       privileges: "{{ wp_mysqldb_dbname }}.*:ALL,GRANT"
       }
@@ -60,6 +60,12 @@
   register: wp_current_version
   tags: [install]
 
+- name: Check Result
+  debug: msg="{{ ('WordPress version {} is currently installed.'.format(wp_current_version.stdout) 
+              if (wp_current_version.stdout|length > 0) 
+              else ('WordPress is not installed. Downloading ...') ) }}"
+  tags: [install]
+
 - name: Check latest Wordpress version available
   shell: curl -s 'https://api.wordpress.org/core/version-check/1.7/' | grep -Po '"version":.*?",' | head -n 1 | cut -d '"' -f4
   register: wp_latest_available
@@ -74,14 +80,11 @@
 - set_fact: 
     wp_install: "{{ false if (wp_current_version.stdout == wp_control_version) else (true) }}"
 
-- debug: msg="WordPress is not installed. Downloading ..."
-  when: wp_current_version.stdout|length < 1
+- name: Execute (re-)install
+  debug: msg="Downloading and installing Wordpress version {{ wp_version }} ..."
+  when: wp_install 
   tags: [install]
-
-- debug: msg="WordPress {{ wp_current_version.stdout }} is installed."
-  when: wp_current_version.stdout|length > 0
-  tags: [install]
-
+  
 
 - name: Download WordPress {{ wp_version }} 
   get_url: 
@@ -168,33 +171,31 @@
     wp-cli core install
     --allow-root 
     --path='{{ wp_path }}'
-    --url='{{ wp_host_ip }}'  
+    --url='{{ wp_host }}'  
     --title='{{ wp_title }}'
     --admin_name='{{ wp_admin_name }}'
     --admin_email='{{ wp_admin_email }}'
     --admin_password='{{ wp_admin_password }}'
   tags: [install]
 
-- name: Update tagline
-  command: >
-    wp-cli --allow-root --path='{{ wp_path }}' 
-    option update blogdescription '{{ wp_tagline }}'
+
+- include: wp_empty_site.yml
   tags: [config]
 
-- include: empty_site.yml
+- include: wp_themes.yml
+  tags: [config]
+  
+- include: wp_options.yml
   tags: [config]
 
-- include: themes.yml
+- include: wp_plugins.yml
   tags: [config]
 
-- include: plugins.yml
+- include: wp_users.yml
   tags: [config]
 
-- include: users.yml
+- include: wp_categories.yml
   tags: [config]
 
-- include: categories.yml
-  tags: [config]
-
-- include: posts_generated.yml
+- include: wp_create_posts.yml
   tags: [config]
