@@ -36,13 +36,13 @@ These variables contain the admin user credentials, the Site Title, Tagline etc.
 
 | Variable name                   | Type    | Default | Description                                             |
 | ------------------------------- | ------- | ------- | ------------------------------------------------------- |
+| wp_version | string | 'latest' | Wordpress version to be installed (format: 'x.x.x') |
 | wp_admin_name | string | 'admin' | Adminuser for e.g. wp-admin |
 | wp_admin_email | string | 'admin@localhost.localdomain' | Admin contact email address |
 | wp_admin_password | string | 'secret' | Password for admin login |
 | wp_title | string | 'Team Site' | Title of wordpress page |
 | wp_tagline | string | 'Informationsplatform' | Subtitle of wordpress page |
-| wp_host | string | 'localhost' | wp-database location |
-| wp_host_ip | string | (N/A) | IP address for wp-installation |
+| wp_host | string | (N/A) | Address for wp-installation |
 | wp_apache_hostname | string | 'team_site' | vhost name and foldername in /var/www |
 | wp_apache_alias | string | 'www.team_site.com' | vhost alias |
 | wp_path | string | '/var/www/{{ wp_apache_hostname }}' | Installation path to wordpress |
@@ -106,6 +106,46 @@ These variables contain the content of the wordpress instance.
 | &nbsp;&nbsp;&nbsp;&nbsp;∟ .category | string | (N/A) | Category name |
 | &nbsp;&nbsp;&nbsp;&nbsp;∟ .date | string | (N/A) | Post date in format: 'yyyy-dd-mm hh:mm' |
 | &nbsp;&nbsp;&nbsp;&nbsp;∟ .content | string | (N/A) | Content |
+| **wp_options** | list |  | Posts to create |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .option_name | string | (N/A) | wp-option to be updated (see below a list of by default available options) | 
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .option_value | string | (N/A) | value to be updated to |
+
+
+#### wp-option list
+
+| Option_name     | Option_name     | Option_name     | Option_name     |
+| --------------- | --------------- | --------------- | --------------- |
+|	active_plugins	|	default_ping_status	|	page_for_posts	|	timezone_string	|
+|	admin_email	|	default_pingback_flag	|	page_on_front	|	uninstall_plugins	|
+|	auto_core_update_failed	|	default_post_format	|	permalink_structure	|	upload_path	|
+|	auto_core_update_notified	|	default_role	|	ping_sites	|	upload_url_path	|
+|	avatar_default	|	finished_splitting_shared_terms	|	posts_per_page	|	uploads_use_yearmonth_folders	|
+|	avatar_rating	|	fresh_site	|	posts_per_rss	|	use_balanceTags	|
+|	blacklist_keys	|	gmt_offset	|	recently_edited	|	use_smilies	|
+|	blog_charset	|	hack_file	|	recovery_keys	|	use_trackback	|
+|	blog_public	|	home	|	require_name_email	|	users_can_register	|
+|	blogdescription	|	html_type	|	rewrite_rules	|	widget_archives	|
+|	blogname	|	image_default_align	|	rss_use_excerpt	|	widget_calendar	|
+|	category_base	|	image_default_link_type	|	show_avatars	|	widget_categories	|
+|	category_children	|	image_default_size	|	show_comments_cookies_opt_in	|	widget_custom_html	|
+|	close_comments_days_old	|	initial_db_version	|	show_on_front	|	widget_media_audio	|
+|	close_comments_for_old_posts	|	large_size_h	|	sidebars_widgets	|	widget_media_gallery	|
+|	comment_max_links	|	large_size_w	|	site_icon	|	widget_media_image	|
+|	comment_moderation	|	link_manager_enabled	|	siteurl	|	widget_media_video	|
+|	comment_order	|	links_updated_date_format	|	start_of_week	|	widget_meta	|
+|	comment_registration	|	mailserver_login	|	sticky_posts	|	widget_nav_menu	|
+|	comment_whitelist	|	mailserver_pass	|	stylesheet	|	widget_pages	|
+|	comments_notify	|	mailserver_port	|	tag_base	|	widget_recent-comments	|
+|	comments_per_page	|	mailserver_url	|	template	|	widget_recent-posts	|
+|	cron	|	medium_large_size_h	|	theme_mods_fblogging	|	widget_rss	|
+|	current_theme	|	medium_large_size_w	|	theme_mods_twentynineteen	|	widget_search	|
+|	date_format	|	medium_size_h	|	theme_switched	|	widget_tag_cloud	|
+|	db_version	|	medium_size_w	|	thread_comments	|	widget_text	|
+|	default_category	|	moderation_keys	|	thread_comments_depth	|	wp_page_for_privacy_policy	|
+|	default_comment_status	|	moderation_notify	|	thumbnail_crop	|	wp_user_roles	|
+|	default_comments_page	|	nonce_key	|	thumbnail_size_h	|		|
+|	default_email_category	|	nonce_salt	|	thumbnail_size_w	|		|
+|	default_link_category	|	page_comments	|	time_format	|		|
 
 
 
