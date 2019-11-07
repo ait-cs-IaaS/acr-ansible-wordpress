@@ -1,0 +1,10 @@
+---
+# tasks file for wordpress_options
+
+- name: Update Options
+  shell: >
+    wp-cli --allow-root --path='{{ wp_path }}' 
+    option update {{ item.key }} '{{ item.value }}'
+  with_dict: "{{ wp_options }}"
+  when: item.value
+  tags: [config]
