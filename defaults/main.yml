@@ -13,14 +13,13 @@ wp_cli_dir: '/usr/local/bin/wp-cli'
 # Wordpress 
 # -----------------------------------------------------------------------
 
-wp_version: 'latest' #'5.2.1'
+wp_version: 'latest' #or e.g. '5.2.1'
 wp_admin_name: 'admin'
 wp_admin_email: 'admin@localhost.localdomain'
 wp_admin_password: 'secret'
 wp_title: 'Team Site'
 wp_tagline: 'Informationsplatform'
-wp_host: 'localhost'
-wp_host_ip: '10.0.0.11' # IP for wp-install
+wp_host: '10.0.0.11' # IP for wp-install
 
 wp_apache_hostname: 'team_site'
 wp_apache_alias: 'www.team_site.com'
@@ -56,6 +55,10 @@ wp_remove_samples: yes
 
 wp_themes:
   - {name: 'fblogging', activate: true } 
+
+wp_options:
+  - blogdescription: '{{ wp_tagline }}'
+# - option_name: option_value
 
 #wp_plugins:
 #  - {name: 'x', activate: true/false }
