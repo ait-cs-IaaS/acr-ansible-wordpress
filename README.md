@@ -28,7 +28,7 @@ There are four sections of variables:
 | wp_sys_user | string | 'www-data' | User owning the wordpress files on server |
 | wp_sys_usergroup | string | 'www-data' | Usergroup owning the wordpress files on server |
 | wp_cli_dir | string | '/usr/local/bin/wp-cli' | Path to the wp-cli installation |
-| libapache2_mod_version | string | 'libapache2-mod-php7.0' | Passed to apach2 role. Use php7.2 for compatibility with Ubuntu 18.04 |
+| libapache2_mod_version | string | 'libapache2-mod-php7.0' | Passed to apache2-role. Use 'libapache2-mod-php7.2' for compatibility with Ubuntu 18.04 |
 
 
 ### Wordpress
@@ -36,7 +36,7 @@ These variables contain the admin user credentials, the Site Title, Tagline etc.
 
 | Variable name                   | Type    | Default | Description                                             |
 | ------------------------------- | ------- | ------- | ------------------------------------------------------- |
-| wp_version | string | 'latest' | Wordpress version to be installed (format: 'x.x.x') |
+| wp_version | string | 'latest' | Wordpress version to be installed (format: 'x.x.x', e.g. '5.2.1') |
 | wp_admin_name | string | 'admin' | Adminuser for e.g. wp-admin |
 | wp_admin_email | string | 'admin@localhost.localdomain' | Admin contact email address |
 | wp_admin_password | string | 'secret' | Password for admin login |
@@ -111,7 +111,7 @@ These variables contain the content of the wordpress instance.
 | &nbsp;&nbsp;&nbsp;&nbsp;∟ .option_value | string | (N/A) | value to be updated to |
 
 
-#### wp-option list
+#### wp-option list (default)
 
 | Option_name     | Option_name     | Option_name     | Option_name     |
 | --------------- | --------------- | --------------- | --------------- |
