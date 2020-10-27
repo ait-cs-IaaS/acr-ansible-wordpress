@@ -38,6 +38,12 @@
       - name: "{{ wp_apache_hostname }}"
         aliases: "{{ wp_apache_alias }}"
         http: true
+        https: "{{ wp_apache_ssl | default(False) }}"
+        cert: "{{ wp_apache_ssl_cert_path | default('ssl-cert-snakeoil.pem') }}"
+        key: "{{ wp_apache_ssl_key_path | default('ssl-cert-snakeoil.key') }}"
+        copycerts: "{{ wp_apache_ssl_copycerts | default(False) }}"
+    apache2_ssl_cert_path: "{{ wp_apache_ssl_cert_path | default('/etc/ssl/certs') }}"
+    apache2_ssl_key_path: "{{ wp_apache_ssl_key_path | default('/etc/ssl/private') }}"
   tags: [install]
 
 
