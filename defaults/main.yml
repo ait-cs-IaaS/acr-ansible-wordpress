@@ -22,7 +22,7 @@ wp_tagline: 'Informationsplatform'
 wp_host: '10.0.0.11' # IP for wp-install
 
 wp_apache_hostname: 'team_site'
-wp_apache_alias: ['www.team_site.com']
+wp_apache_aliases: ['www.team_site.com']
 wp_path: '/var/www/{{ wp_apache_hostname }}'
 
 # -----------------------------------------------------------------------
