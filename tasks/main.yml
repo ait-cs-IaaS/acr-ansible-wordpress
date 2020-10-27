@@ -33,7 +33,7 @@
     apply:
       tags: [install]
   vars: 
-    apache2_packages: "{{ libapache2_mod_version }}"
+    apache2_packages: "{{ [libapache2_mod_version] }}"
     apache2_vhosts:
       - name: "{{ wp_apache_hostname }}"
         aliases: "{{ wp_apache_alias }}"
