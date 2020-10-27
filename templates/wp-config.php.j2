@@ -92,3 +92,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 /** Sets up WordPress vars and included files. */
 require_once( ABSPATH . 'wp-settings.php' );
 
+/** Proxy header parsing */
+if ( isset( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+	$http_x_headers = explode( ',', $_SERVER['HTTP_X_FORWARDED_FOR'] );
+
+	$_SERVER['REMOTE_ADDR'] = $http_x_headers[0];
+}
+
