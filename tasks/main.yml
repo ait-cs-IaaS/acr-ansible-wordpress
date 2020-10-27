@@ -36,7 +36,7 @@
     apache2_packages: "{{ [libapache2_mod_version] }}"
     apache2_vhosts:
       - name: "{{ wp_apache_hostname }}"
-        aliases: "{{ wp_apache_alias }}"
+        aliases: "{{ wp_apache_aliases }}"
         http: true
         https: "{{ wp_apache_ssl | default(False) }}"
         cert: "{{ wp_apache_ssl_cert | default('ssl-cert-snakeoil.pem') }}"

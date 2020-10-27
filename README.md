@@ -32,16 +32,16 @@ There are four sections of variables:
 
 ### Apache Config
 
-| Variable name           | Type   | Default                 | Description                                                                |
-| ----------------------- | ------ | ----------------------- | -------------------------------------------------------------------------- |
-| wp_apache_hostname      | string | 'team_site'             | vhost name and foldername in /var/www                                      |
-| wp_apache_alias         | string | 'www.team_site.com'     | vhost alias                                                                |
-| wp_apache_ssl           | bool   | False                   | Activate HTTPS for this wordpress instance                                 |
-| wp_apache_ssl_cert      | path   | 'ssl-cert-snakeoil.pem' | The source path of the ssl certificate file                                |
-| wp_apache_ssl_key       | path   | 'ssl-cert-snakeoil.key' | The source path of the ssl certificates key file                           |
-| wp_apache_ssl_copycerts | bool   | False                   | Flag to control if certificate and key should be copied to the target host |
-| wp_apache_ssl_cert_path | path   | '/etc/ssl/certs'        | The base directory for certificates on the host                            |
-| wp_apache_ssl_key_path  | path   | '/etc/ssl/private'      | The base directory for certificate keys on the host                        |
+| Variable name           | Type         | Default                 | Description                                                                |
+| ----------------------- | ------------ | ----------------------- | -------------------------------------------------------------------------- |
+| wp_apache_hostname      | string       | 'team_site'             | vhost name and foldername in /var/www                                      |
+| wp_apache_aliases       | list(string) | ['www.team_site.com']   | vhost aliases                                                              |
+| wp_apache_ssl           | bool         | False                   | Activate HTTPS for this wordpress instance                                 |
+| wp_apache_ssl_cert      | path         | 'ssl-cert-snakeoil.pem' | The source path of the ssl certificate file                                |
+| wp_apache_ssl_key       | path         | 'ssl-cert-snakeoil.key' | The source path of the ssl certificates key file                           |
+| wp_apache_ssl_copycerts | bool         | False                   | Flag to control if certificate and key should be copied to the target host |
+| wp_apache_ssl_cert_path | path         | '/etc/ssl/certs'        | The base directory for certificates on the host                            |
+| wp_apache_ssl_key_path  | path         | '/etc/ssl/private'      | The base directory for certificate keys on the host                        |
 
 ### Wordpress
 These variables contain the admin user credentials, the Site Title, Tagline etc.
