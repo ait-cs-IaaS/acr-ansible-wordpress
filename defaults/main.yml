@@ -56,8 +56,11 @@ wp_remove_samples: yes
 wp_themes:
   - {name: 'go', activate: true } #fblogging
 
-wp_options:
-  - blogdescription: '{{ wp_tagline }}'
+wp_options_all:
+  blogdescription: '{{ wp_tagline }}'
+
+# wp_options_all:
+#   blogdescription: '{{ wp_tagline }}'
 # - option_name: option_value
 
 #wp_plugins:

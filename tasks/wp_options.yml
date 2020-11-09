@@ -5,6 +5,6 @@
   shell: >
     wp-cli --allow-root --path='{{ wp_path }}' 
     option update {{ item.key }} '{{ item.value }}'
-  with_dict: "{{ wp_options }}"
+  with_dict: "{{ wp_options_all | combine(wp_options_group | default({})) | combine(wp_options_host | default({})) }}"
   when: item.value
   tags: [config]
