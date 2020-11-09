@@ -6,6 +6,10 @@
     wp-cli --allow-root --path='{{ wp_path }}' 
     term create category '{{ item.name }}' 
     --description='{{ item.description }}'
+  register: category_result
   with_items: "{{ wp_categories }}"
   when: wp_categories is defined
+  failed_when:
+    - category_result.rc != 0
+    - '"A term with the name provided already exists with this parent." not in category_result.stderr'
   tags: [config]
