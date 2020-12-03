@@ -2,6 +2,8 @@
 # tasks file for wordpress_categories
 
 - name: Create category
+  become: yes
+  become_user: "{{ wp_sys_user }}"
   command: >
     wp-cli --allow-root --path='{{ wp_path }}' 
     term create category '{{ item.name }}' 

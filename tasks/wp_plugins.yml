@@ -2,6 +2,8 @@
 # tasks file for wordpress_plugins
 
 - name: Update plugins
+  become: yes
+  become_user: "{{ wp_sys_user }}"
   command: >
     wp-cli --allow-root --path='{{ wp_path }}' 
     plugin update --all
@@ -9,6 +11,8 @@
 
 
 - name: Install plugins
+  become: yes
+  become_user: "{{ wp_sys_user }}"
   command: >
     wp-cli --allow-root --path='{{ wp_path }}' 
     plugin install {{ item.name }} 

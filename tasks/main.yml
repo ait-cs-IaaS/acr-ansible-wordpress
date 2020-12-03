@@ -179,6 +179,8 @@
 
 
 - name: Install wp-core
+  become: yes
+  become_user: "{{ wp_sys_user }}"
   command: >
     wp-cli core install
     --allow-root 

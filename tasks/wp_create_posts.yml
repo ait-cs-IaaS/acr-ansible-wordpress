@@ -3,6 +3,8 @@
 
 
 - name: Create posts
+  become: yes
+  become_user: "{{ wp_sys_user }}"
   shell: >
     wp-cli --allow-root --path='{{ wp_path }}' 
     post create 

@@ -2,6 +2,8 @@
 # tasks file for wordpress_themes
 
 - name: Install theme
+  become: yes
+  become_user: "{{ wp_sys_user }}"
   command: >
     wp-cli --allow-root --path='{{ wp_path }}' theme install {{ item.name }}
   with_items: "{{ wp_themes }}"
@@ -9,6 +11,8 @@
   tags: [config]
 
 - name: Check install
+  become: yes
+  become_user: "{{ wp_sys_user }}"
   command: >
     wp-cli --allow-root --path='{{ wp_path }}' theme is-installed {{ item.name }}
   changed_when: false
@@ -17,6 +21,8 @@
   tags: [config]
 
 - name: Activate theme
+  become: yes
+  become_user: "{{ wp_sys_user }}"
   command: >
     wp-cli --allow-root --path='{{ wp_path }}' theme activate {{ item.name }}
   register: activated_theme

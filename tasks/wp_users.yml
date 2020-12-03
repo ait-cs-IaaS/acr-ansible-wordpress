@@ -3,6 +3,8 @@
 
 
 - name: Create User
+  become: yes
+  become_user: "{{ wp_sys_user }}"
   command: >
     wp-cli --allow-root --path='{{ wp_path }}' 
     user create 
@@ -21,6 +23,8 @@
 
 
 - name: Update Users
+  become: yes
+  become_user: "{{ wp_sys_user }}"
   command: >
     wp-cli --allow-root --path='{{ wp_path }}' 
     user update 

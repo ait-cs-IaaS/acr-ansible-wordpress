@@ -2,6 +2,8 @@
 # tasks file for wordpress_empty_site
 
 - name: Remove sample content
+  become: yes
+  become_user: "{{ wp_sys_user }}"
   command: >
     wp-cli --allow-root --path='{{ wp_path }}' 
     site empty --yes --uploads 
