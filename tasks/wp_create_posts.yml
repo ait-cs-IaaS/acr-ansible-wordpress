@@ -9,7 +9,7 @@
     wp-cli --allow-root --path='{{ wp_path }}' 
     post create 
     --post_content='{{ item.content }}'
-    --post_author='{{ item.author }}'
+    --post_author="$(wp-cli --allow-root --path='{{ wp_path }}' user get {{ item.author }} --field=ID)"
     --post_category='{{ item.category }}'
     --post_title='{{ item.title }}'
     --post_date='{{ item.date }}'
