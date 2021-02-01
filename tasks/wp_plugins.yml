@@ -8,15 +8,18 @@
     wp-cli --allow-root --path='{{ wp_path }}' 
     plugin update --all
   tags: [config]
+  when: wp_plugins_update|bool
 
 
 - name: Install plugins
   become: yes
   become_user: "{{ wp_sys_user }}"
-  command: >
-    wp-cli --allow-root --path='{{ wp_path }}' 
-    plugin install {{ item.name }} 
-    --activate
+  shell: >
+    wp-cli --user={{ wp_admin_name }} --allow-root --path='{{ wp_path }}' 
+    plugin install {{ item.name }} {% if item.version is defined %} --version='{{ item.version }}' --force{% endif %}
+    {% if item.activate is defined and item.activate|bool %} --activate --activate-network {% endif %}
+  environment:
+    WP_CLI_CACHE_DIR: "/tmp/.wp-cli/cache"
   with_items: "{{ wp_plugins }}"
   when: wp_plugins is defined
   tags: [config]

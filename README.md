@@ -84,41 +84,47 @@ Variables required for the wp-config file.
 ### Wordpress Content
 These variables contain the content of the wordpress instance.
 
-| Variable name                              | Type    | Default     | Description                                                                |
-| ------------------------------------------ | ------- | ----------- | -------------------------------------------------------------------------- |
-| wp_remove_samples                          | boolean | yes         | If set to 'yes' the default example content of wordpress is removed        |
-| **wp_themes**                              | list    |             | Wordpress themes to install                                                |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .name            | string  | 'fblogging' | Theme name                                                                 |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .activate        | boolean | true        | If set it is activated after installation                                  |
-| **wp_plugins**                             | list    |             | Wordpress plugins to install                                               |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .name            | string  | (N/A)       | Plugin name                                                                |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .activate        | boolean | true        | If set it is activated after installation                                  |
-| **wp_users**                               | list    |             | Users to create                                                            |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .name            | string  | (N/A)       | User login                                                                 |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .displayname     | string  | (N/A)       | User displayname                                                           |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .email           | string  | (N/A)       | User email                                                                 |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .password        | string  | (N/A)       | User password                                                              |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .role            | string  | (N/A)       | User role                                                                  |
-| **wp_users_update**                        | list    |             | Users to update                                                            |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .id_id           | string  | (N/A)       | Identify by ID *or*                                                        |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .id_name         | string  | (N/A)       | Identify by name *or*                                                      |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .id_email        | string  | (N/A)       | Identify by email                                                          |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .new_displayname | string  | (N/A)       | Updated displayname                                                        |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .new_email       | string  | (N/A)       | Updated email                                                              |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .new_password    | string  | (N/A)       | Updated password                                                           |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .new_role        | string  | (N/A)       | Updated role                                                               |
-| **wp_categories**                          | list    |             | Wordpress categories to create                                             |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .name            | string  | (N/A)       | Category name                                                              |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .description     | string  | (N/A)       | Category description                                                       |
-| **wp_posts**                               | list    |             | Posts to create                                                            |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .title           | string  | (N/A)       | Post title                                                                 |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .author          | string  | (N/A)       | User name or Id                                                            |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .category        | string  | (N/A)       | Category name                                                              |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .date            | string  | (N/A)       | Post date in format: 'yyyy-dd-mm hh:mm'                                    |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .content         | string  | (N/A)       | Content                                                                    |
-| **wp_options**                             | list    |             | Posts to create                                                            |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .option_name     | string  | (N/A)       | wp-option to be updated (see below a list of by default available options) |
-| &nbsp;&nbsp;&nbsp;&nbsp;∟ .option_value    | string  | (N/A)       | value to be updated to                                                     |
+| Variable name                              | Type            | Default     | Description                                                                                  |
+| ------------------------------------------ | --------------- | ----------- | -------------------------------------------------------------------------------------------- |
+| wp_remove_samples                          | boolean         | yes         | If set to 'yes' the content of wordpress is removed (deletes even special posts for plugins) |
+| wp_remove_posts                            | list[post-type] | undefined   | Less intrusive post deletion by post types (wp_remove_samples must be 'no/false')            |
+| **wp_themes**                              | list            |             | Wordpress themes to install                                                                  |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .name            | string          | 'fblogging' | Theme name                                                                                   |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .activate        | boolean         | true        | If set it is activated after installation                                                    |
+| **wp_plugins**                             | list            |             | Wordpress plugins to install                                                                 |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .name            | string          | (N/A)       | Plugin name                                                                                  |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .activate        | boolean         | true        | If set it is activated after installation                                                    |
+| **wp_users**                               | list            |             | Users to create                                                                              |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .name            | string          | (N/A)       | User login                                                                                   |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .displayname     | string          | (N/A)       | User displayname                                                                             |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .email           | string          | (N/A)       | User email                                                                                   |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .password        | string          | (N/A)       | User password                                                                                |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .role            | string          | (N/A)       | User role                                                                                    |
+| **wp_users_update**                        | list            |             | Users to update                                                                              |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .id_id           | string          | (N/A)       | Identify by ID *or*                                                                          |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .id_name         | string          | (N/A)       | Identify by name *or*                                                                        |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .id_email        | string          | (N/A)       | Identify by email                                                                            |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .new_displayname | string          | (N/A)       | Updated displayname                                                                          |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .new_email       | string          | (N/A)       | Updated email                                                                                |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .new_password    | string          | (N/A)       | Updated password                                                                             |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .new_role        | string          | (N/A)       | Updated role                                                                                 |
+| **wp_categories**                          | list            |             | Wordpress categories to create                                                               |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .name            | string          | (N/A)       | Category name                                                                                |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .description     | string          | (N/A)       | Category description                                                                         |
+| **wp_posts**                               | list            |             | Posts to create                                                                              |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .title           | string          | (N/A)       | Post title                                                                                   |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .author          | string          | (N/A)       | User name or Id                                                                              |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .category        | string          | (N/A)       | Category name                                                                                |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .date            | string          | (N/A)       | Post date in format: 'yyyy-dd-mm hh:mm'                                                      |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .content         | string          | (N/A)       | Content                                                                                      |
+| **wp_posts_meta**                               | list            |             | Metadata to add Vto a post                                                                              |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .post_name           | string          | (N/A)       | The name of the post to add the data to                                                                                   |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .post_type          | string          | (N/A)       | The type of the post (need to resolve name to id)                                                                              |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .key        | string          | (N/A)       | The metadata key                                                                            |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .value            | string          | (N/A)       | The metadata value                                                      |
+| **wp_options**                             | list            |             | Posts to create                                                                              |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .option_name     | string          | (N/A)       | wp-option to be updated (see below a list of by default available options)                   |
+| &nbsp;&nbsp;&nbsp;&nbsp;∟ .option_value    | string          | (N/A)       | value to be updated to                                                                       |
 
 
 #### wp-option list (default)

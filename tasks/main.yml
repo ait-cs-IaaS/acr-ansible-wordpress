@@ -193,13 +193,12 @@
     --admin_password='{{ wp_admin_password }}'
   tags: [install]
 
-
 - include: wp_empty_site.yml
   tags: [config]
 
 - include: wp_themes.yml
   tags: [config]
-  
+
 - include: wp_options.yml
   tags: [config]
 

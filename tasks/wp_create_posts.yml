@@ -6,14 +6,25 @@
   become: yes
   become_user: "{{ wp_sys_user }}"
   shell: >
-    wp-cli --allow-root --path='{{ wp_path }}' 
+    wp-cli {% if item.user is defined %} --user='{{ item.user }}' {% endif %} --allow-root --path='{{ wp_path }}' 
     post create 
     --post_content='{{ item.content }}'
     --post_author="$(wp-cli --allow-root --path='{{ wp_path }}' user get {{ item.author }} --field=ID)"
-    --post_category='{{ item.category }}'
+    {% if item.category is defined %}--post_category='{{ item.category }}'{% endif %}
     --post_title='{{ item.title }}'
-    --post_date='{{ item.date }}'
+    {% if item.date is defined %}--post_date='{{ item.date }}'{% endif %}
     --post_status="publish"
+    {% if item.post_type is defined %} --post_type='{{ item.post_type }}'{% endif %}
   with_items: "{{ wp_posts }}"
   when: wp_posts is defined
+  tags: [config]
+
+- name: Create meta for posts
+  become: yes
+  become_user: "{{ wp_sys_user }}"
+  shell: >
+    wp-cli --allow-root --path='{{ wp_path }}' 
+    post meta update "$(wp-cli  --allow-root --path='{{ wp_path }}'  post list --name='{{ item.post_name }}' {% if item.post_type is defined %} --post_type='{{ item.post_type }}' {% endif %} --field=ID)" '{{ item.key }}' '{{ item.value }}'
+  with_items: "{{ wp_posts_meta }}"
+  when: wp_posts_meta is defined
   tags: [config]

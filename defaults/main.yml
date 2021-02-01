@@ -65,6 +65,7 @@ wp_options:
 
 #wp_plugins:
 #  - {name: 'x', activate: true/false }
+wp_plugins_update: yes
 
 #wp_users:
 #  - {name: 'x', displayname: 'x', email: 'x', password: 'x', role: x}
@@ -82,3 +83,4 @@ wp_options:
 #     category: 'x'
 #     date: 'yyyy-dd-mm hh:mm'
 #     content: 'x'
+wp_posts_meta: []

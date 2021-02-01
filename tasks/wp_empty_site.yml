@@ -6,6 +6,41 @@
   become_user: "{{ wp_sys_user }}"
   command: >
     wp-cli --allow-root --path='{{ wp_path }}' 
-    site empty --yes --uploads 
+    post empty --yes --uploads 
   when: wp_remove_samples
   tags: [config]
+
+- name: Get posts to remove
+  become: yes
+  become_user: "{{ wp_sys_user }}"
+  shell: "wp-cli --allow-root --path='{{ wp_path }}' post list --post_type='{{ item }}' --format=ids"
+  loop: "{{ wp_remove_posts }}"
+  when: not wp_remove_samples and wp_remove_posts is defined
+  register: _remove_posts
+  tags: [config]
+
+- name: Remove posts
+  become: yes
+  become_user: "{{ wp_sys_user }}"
+  shell: >
+    wp-cli --allow-root --path='{{ wp_path }}' 
+    post delete --force {{ item.stdout }}
+  loop: "{{ _remove_posts.results }}"
+  when: _remove_posts is defined and item.stdout_lines|length > 0
+  tags: [config]
+
+- name: Remove uploads
+  become: yes
+  file:
+    path: "{{ wp_path }}/wp-content/uploads"
+    state: absent
+  when: not wp_remove_samples and wp_remove_posts is defined
+
+- name: Remove uploads
+  become: yes
+  file:
+    path: "{{ wp_path }}/wp-content/uploads"
+    state: directory
+    owner: "{{ wp_sys_user }}"
+    group: "{{ wp_sys_usergroup }}"
+  when: not wp_remove_samples and wp_remove_posts is defined
