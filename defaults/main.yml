@@ -84,3 +84,6 @@ wp_plugins_update: yes
 #     date: 'yyyy-dd-mm hh:mm'
 #     content: 'x'
 wp_posts_meta: []
+
+# apache setting
+libapache2_mod_version: 'libapache2-mod-php7.2' # Ubuntu 18.04
