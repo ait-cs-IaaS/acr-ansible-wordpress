@@ -56,7 +56,7 @@
 
 - name: Install required packages
   package:
-      name: [php7.2, php7.2-mysql, php7.2-gd, php7.2-ssh2, curl]
+      name: "{{ wp_required_packages }}"
       state: present
   tags: [install]
 
