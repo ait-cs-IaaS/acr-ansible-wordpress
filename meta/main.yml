@@ -3,7 +3,7 @@ galaxy_info:
   description: wordpress
   company: Austrian Institute of Technology (AIT)
 
-  license: MIT
+  license: GPL-3.0
   min_ansible_version: 2.4
   platforms:
     - name: Ubuntu
