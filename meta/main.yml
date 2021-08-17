@@ -1,6 +1,7 @@
 galaxy_info:
   author: Lenhard Reuter
   description: wordpress
+  role_name: wordpress
   company: Austrian Institute of Technology (AIT)
 
   license: GPL-3.0
