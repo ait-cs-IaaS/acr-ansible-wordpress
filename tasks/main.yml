@@ -35,12 +35,7 @@
       tags: [install]
   vars: 
     apache2_packages: "{{ [libapache2_mod_version] }}"
-    apache2_modules:
-      - name: rewrite
-      - name: deflate
-      - name: headers
-      - name: ssl
-      - name: authz_host
+    apache2_modules: "{{ wp_apache_modules }}"
     apache2_vhosts:
       - name: "{{ wp_apache_hostname }}"
         aliases: "{{ wp_apache_aliases }}"
