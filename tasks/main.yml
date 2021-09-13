@@ -44,6 +44,7 @@
         cert: "{{ wp_apache_ssl_cert | default('ssl-cert-snakeoil.pem') }}"
         key: "{{ wp_apache_ssl_key | default('ssl-cert-snakeoil.key') }}"
         copycerts: "{{ wp_apache_ssl_copycerts | default(False) }}"
+        vhost_template: "{{ wp_apache_vhost_template | default(omit) }}"
     apache2_ssl_cert_path: "{{ wp_apache_ssl_cert_path | default('/etc/ssl/certs') }}"
     apache2_ssl_key_path: "{{ wp_apache_ssl_key_path | default('/etc/ssl/private') }}"
   tags: [install]
