@@ -1,25 +1,32 @@
 ---
-# tasks file for wordpress_plugins
-
 - name: Update plugins
-  become: yes
-  become_user: "{{ wp_sys_user }}"
-  command: >
-    wp-cli --allow-root --path='{{ wp_path }}' 
-    plugin update --all
+  become: true
+  become_user: '{{ wp_sys_user }}'
+  ansible.builtin.command:
+      cmd: >
+          wp-cli plugin update --allow-root --path='{{ wp_path }}' --all
   tags: [config]
-  when: wp_plugins_update|bool
-
+  when: wp_plugins_update | bool
 
 - name: Install plugins
-  become: yes
-  become_user: "{{ wp_sys_user }}"
-  shell: >
-    wp-cli --user={{ wp_admin_name }} --allow-root --path='{{ wp_path }}' 
-    plugin install {{ item.name }} {% if item.version is defined %} --version='{{ item.version }}' --force{% endif %}
-    {% if item.activate is defined and item.activate|bool %} --activate --activate-network {% endif %}
+  become: true
+  become_user: '{{ wp_sys_user }}'
+  ansible.builtin.command:
+      cmd: >
+          wp-cli  plugin install {{ item.name }}  --user={{ wp_admin_name
+          }}  --allow-root  --path='{{ wp_path }}'
+
+          {% if item.version is defined %}
+            --version='{{ item.version }}'
+            --force
+          {% endif %}
+
+          {% if item.activate is defined and item.activate | bool %}
+            --activate
+            --activate-network
+          {% endif %}
   environment:
-    WP_CLI_CACHE_DIR: "/tmp/.wp-cli/cache"
-  with_items: "{{ wp_plugins }}"
+      WP_CLI_CACHE_DIR: /tmp/.wp-cli/cache
+  loop: '{{ wp_plugins }}'
   when: wp_plugins is defined
   tags: [config]

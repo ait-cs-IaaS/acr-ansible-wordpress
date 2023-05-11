@@ -1,32 +1,36 @@
 ---
-# tasks file for wordpress_themes
-
 - name: Install theme
-  become: yes
-  become_user: "{{ wp_sys_user }}"
-  command: >
-    wp-cli --allow-root --path='{{ wp_path }}' theme install {{ item.name }}
-  with_items: "{{ wp_themes }}"
+  become: true
+  become_user: '{{ wp_sys_user }}'
+  ansible.builtin.command:
+      cmd: >
+          wp-cli  theme install  {{ item.name }} --allow-root  --path='{{
+          wp_path }}'
+  loop: '{{ wp_themes }}'
   when: wp_themes is defined
   tags: [config]
 
 - name: Check install
-  become: yes
-  become_user: "{{ wp_sys_user }}"
-  command: >
-    wp-cli --allow-root --path='{{ wp_path }}' theme is-installed {{ item.name }}
+  become: true
+  become_user: '{{ wp_sys_user }}'
+  ansible.builtin.command:
+      cmd: >
+          wp-cli  theme is-installed  {{ item.name }} --allow-root  --path='{{
+          wp_path }}'
   changed_when: false
-  with_items: "{{ wp_themes }}"
+  loop: '{{ wp_themes }}'
   when: wp_themes is defined
   tags: [config]
 
 - name: Activate theme
-  become: yes
-  become_user: "{{ wp_sys_user }}"
-  command: >
-    wp-cli --allow-root --path='{{ wp_path }}' theme activate {{ item.name }}
+  become: true
+  become_user: '{{ wp_sys_user }}'
+  ansible.builtin.command:
+      cmd: >
+          wp-cli  theme activate  {{ item.name }} --allow-root  --path='{{
+          wp_path }}'
   register: activated_theme
   changed_when: "'Success: Switched to' in activated_theme.stdout"
-  with_items: "{{ wp_themes }}"
+  loop: '{{ wp_themes }}'
   when: item.name and item.activate | default(false)
   tags: [config]

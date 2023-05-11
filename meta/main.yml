@@ -1,23 +1,21 @@
+---
 galaxy_info:
-  author: Lenhard Reuter
-  description: wordpress
-  role_name: wordpress
-  company: Austrian Institute of Technology (AIT)
+    author: Lenhard Reuter
+    description: wordpress
+    role_name: wordpress
+    company: Austrian Institute of Technology (AIT)
 
-  license: GPL-3.0
-  min_ansible_version: 2.4
-  platforms:
-    - name: Ubuntu
-      versions:
-        - 18.04 LTS
+    license: GPL-3.0
+    min_ansible_version: '2.4'
+    platforms:
+        - name: Ubuntu
+          versions:
+              - 'focal'
 
-  categories:
-    - wordpress
-    - website
-    - blog
-    - ubuntu
-
-  galaxy_tags: []
+    galaxy_tags:
+        - wordpress
+        - website
+        - blog
+        - ubuntu
 
 dependencies: []
-  

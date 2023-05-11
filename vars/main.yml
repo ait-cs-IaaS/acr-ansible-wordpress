@@ -6,26 +6,16 @@
 # wp_users:
 #   - {name: 'control', displayname: 'control', email: 'control@example.com', password: 'MBdGSd8rY2m4WI69', role: administrator}
 
-
 # wp_users_update:
 #   - {id_name: 'control', new_displayname: 'new_control_display_name' }
-  
 
 # wp_categories:
 #   - {name: 'Pressemeldungen', description: 'Pressemeldungen der SeiberOrg'}
 
-
-# wp_posts: 
+# wp_posts:
 #   - title: "SeiberOrg neues Cyber Center"
 #     author: mweiss
 #     category: "Pressemeldungen"
 #     date: "2019-02-26 12:30"
-#     content: 
-#       "In der heutigen Zeit haben Umwelt und Nachhaltigkeit eine ganz besondere Bedeutung.
-#       Das dieses Jahr neu eröffnete SeiberOrg Cyber Center war das erste Center, das komplett energieneutral und selbstversorgend ist.
-#       Nach der erfolgreichen Eröffnung dieses Centers planen wir jetzt im Laufe der nächste 5 Jahre alle SeiberOrg Standorte mit ähnlichen Konzepten umweltschonender und nachhaltiger zu machen.
-
-#       Vinzent Wallner aus unserem Vorstand hatte dazu folgendes zu sagen:
-#       \"Wir konnten im letzten Jahre hier viele Erfahrungen sammeln, die uns helfen werden, unsere anderen Cyber Center zu optimieren.
-#       Das neue Center ist für uns ein Proof of Concept, das wir jetzt auf unsere anderen Standorte auch anwenden werden.
-#       Die Umwelt und Nachhaltigkeit stehen bei uns ganz vorne.\""
+#     content:
+#       "html content"
