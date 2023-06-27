@@ -6,6 +6,7 @@
       cmd: >
           wp-cli  post empty --allow-root --path='{{ wp_path }}' --yes --uploads
   when: wp_remove_samples
+  changed_when: false
   tags: [config]
 
 - name: Get posts to remove
@@ -17,6 +18,7 @@
           item }}' --format=ids
   loop: '{{ wp_remove_posts }}'
   when: not wp_remove_samples and wp_remove_posts is defined
+  changed_when: false
   register: _remove_posts
   tags: [config]
 
@@ -29,6 +31,7 @@
           item.stdout }}
   loop: '{{ _remove_posts.results }}'
   when: _remove_posts is defined and item.stdout_lines | length > 0
+  changed_when: false
   tags: [config]
 
 - name: Remove uploads
@@ -45,5 +48,5 @@
       state: directory
       owner: '{{ wp_sys_user }}'
       group: '{{ wp_sys_usergroup }}'
-      mode: 0644
+      mode: '0755'
   when: not wp_remove_samples and wp_remove_posts is defined

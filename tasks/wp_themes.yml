@@ -8,6 +8,7 @@
           wp_path }}'
   loop: '{{ wp_themes }}'
   when: wp_themes is defined
+  changed_when: false
   tags: [config]
 
 - name: Check install

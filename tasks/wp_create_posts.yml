@@ -25,6 +25,7 @@
             --post_type='{{ item.post_type }}'
           {% endif %}
 
+  changed_when: false
   with_items: '{{ wp_posts }}'
   when: wp_posts is defined
   tags: [config]
@@ -45,4 +46,5 @@
           '{{ item.key }}' '{{ item.value }}'
   with_items: '{{ wp_posts_meta }}'
   when: wp_posts_meta is defined
+  changed_when: false
   tags: [config]

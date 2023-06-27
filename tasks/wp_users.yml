@@ -15,6 +15,7 @@
       ('username is already registered' not in check_users.stderr) and
       (check_users.rc > 0)
   tags: [config]
+
 - name: Update Users
   become: true
   become_user: '{{ wp_sys_user }}'
@@ -31,4 +32,5 @@
           (item.new_password is defined) else ('')) }}
   loop: '{{ wp_users_update }}'
   when: wp_users_update is defined
+  changed_when: false
   tags: [config]

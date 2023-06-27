@@ -57,7 +57,7 @@
       force: true
       owner: root
       group: root
-      mode: 0755
+      mode: '0755'
   tags: [install]
 
 - name: Get Wordpress versions
@@ -74,6 +74,8 @@
   tags: [install]
 
 - name: Install WordPress
+  when: not wp_current_version == wp_version
+  tags: [install]
   block:
       - name: Remove current directory
         ansible.builtin.file:
@@ -101,16 +103,13 @@
         notify: Restart apache2
         tags: [install]
 
-  when: not wp_current_version == wp_version
-  tags: [install]
-
 - name: Wordpress config
   ansible.builtin.template:
       src: wp-config.php.j2
       dest: '{{ wp_path }}/wp-config.php'
       owner: '{{ wp_sys_user }}'
       group: '{{ wp_sys_usergroup }}'
-      mode: 0644
+      mode: '0644'
   tags: [install]
 
 # -----------------------------------------------------------------------
@@ -163,3 +162,11 @@
   ansible.builtin.include_tasks:
       file: wp_create_posts.yml
   tags: [config]
+
+- name: Ensure correct permissions on upload folder
+  ansible.builtin.file:
+      path: '{{ wp_path }}/wp-content/uploads'
+      state: directory
+      owner: '{{ wp_sys_user }}'
+      group: '{{ wp_sys_usergroup }}'
+      mode: '755'

@@ -1,7 +1,7 @@
 wordpress
 =========
 
-This role installs and configures wordpress and adds content defined in the vars file. 
+This role installs and configures wordpress and adds content defined in the vars file.
 
 Requirements
 ------------
@@ -19,7 +19,7 @@ There are four sections of variables:
 - Misc
 - Wordpress
 - wp-config
-- Wordpress Content 
+- Wordpress Content
 
 ### Misc
 
@@ -177,14 +177,14 @@ Example Playbook
 ----------------
 
 ```yaml
-- hosts: 
+- hosts:
   - wordpress
 
   vars:
     ansible_become: yes
     ansible_become_pass: <password>
 
-  roles:  
+  roles:
     - wordpress
 ```
 
@@ -192,4 +192,3 @@ License
 -------
 
 GPL-3.0
-

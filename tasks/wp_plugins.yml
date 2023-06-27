@@ -7,6 +7,7 @@
           wp-cli plugin update --allow-root --path='{{ wp_path }}' --all
   tags: [config]
   when: wp_plugins_update | bool
+  changed_when: false
 
 - name: Install plugins
   become: true
@@ -29,4 +30,5 @@
       WP_CLI_CACHE_DIR: /tmp/.wp-cli/cache
   loop: '{{ wp_plugins }}'
   when: wp_plugins is defined
+  changed_when: false
   tags: [config]

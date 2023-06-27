@@ -8,4 +8,5 @@
           }}' '{{ item.value }}'
   with_dict: '{{ wp_options }}'
   when: item.value
+  changed_when: false
   tags: [config]

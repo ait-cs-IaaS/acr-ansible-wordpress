@@ -9,6 +9,7 @@
   register: category_result
   with_items: '{{ wp_categories }}'
   when: wp_categories is defined
+  changed_when: false
   failed_when:
       - category_result.rc != 0
       - '"A term with the name provided already exists with this parent." not in
