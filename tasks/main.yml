@@ -139,6 +139,11 @@
 
   changed_when: false
 
+- name: Include user tasks
+  tags: [config]
+  ansible.builtin.include_tasks:
+    file: wp_users.yml
+
 - name: Include clean site tasks
   tags: [config]
   ansible.builtin.include_tasks:
@@ -158,11 +163,6 @@
   tags: [config]
   ansible.builtin.include_tasks:
     file: wp_plugins.yml
-
-- name: Include user tasks
-  tags: [config]
-  ansible.builtin.include_tasks:
-    file: wp_users.yml
 
 - name: Include categories tasks
   tags: [config]
