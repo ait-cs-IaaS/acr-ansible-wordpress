@@ -1,0 +1,29 @@
+---
+- name: Ensure backup folder exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ wp_backup_path }}"
+    owner: "{{ wp_sys_user }}"
+    group: "{{ wp_sys_user }}"
+    state: directory
+
+- name: Backup Database
+  become: true
+  ansible.builtin.command: >
+    wp-cli db export
+    {{ wp_backup_sql }} 
+
+    --user={{ wp_sys_user }}
+    --allow-root 
+    --path='{{ wp_path }}'
+  changed_when: false
+
+- name: Backup Server files
+  become: true
+  community.general.archive:
+    path: "{{ wp_path }}"
+    dest: "{{ wp_backup_files }}"
+    owner: "{{ wp_sys_user }}"
+    group: "{{ wp_sys_usergroup }}"
+    format: gz
+    force_archive: true

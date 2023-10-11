@@ -1,172 +1,188 @@
 ---
 - name: Updating apt-Cache
+  tags: [install]
   become: true
   ansible.builtin.apt:
-      update_cache: true
-      cache_valid_time: 3600
-  tags: [install]
+    update_cache: true
+    cache_valid_time: 3600
 
 - name: Install MariaDB
-  ansible.builtin.include_role:
-      name: mariadb
-  vars:
-      mariadb_databases:
-          - name: '{{ wp_mysqldb_dbname }}'
-      mariadb_users:
-          - name: '{{ wp_mysqldb_user }}'
-            host: '{{ wp_mysqldb_host }}'
-            password: '{{ wp_mysqldb_password }}'
-            privileges: '{{ wp_mysqldb_dbname }}.*:ALL,GRANT'
   tags: [install]
+  ansible.builtin.include_role:
+    name: mariadb
+  vars:
+    mariadb_databases:
+      - name: "{{ wp_mysqldb_dbname }}"
+    mariadb_users:
+      - name: "{{ wp_mysqldb_user }}"
+        host: "{{ wp_mysqldb_host }}"
+        password: "{{ wp_mysqldb_password }}"
+        privileges: "{{ wp_mysqldb_dbname }}.*:ALL,GRANT"
 
 - name: Install apache2
-  ansible.builtin.include_role:
-      name: apache2
-  vars:
-      apache2_packages: '{{ [libapache2_mod_version] }}'
-      apache2_modules: '{{ wp_apache_modules }}'
-      apache2_vhosts:
-          - name: '{{ wp_apache_hostname }}'
-            aliases: '{{ wp_apache_aliases }}'
-            http: true
-            https: '{{ wp_apache_ssl | default(False) }}'
-            cert: "{{ wp_apache_ssl_cert | default('ssl-cert-snakeoil.pem') }}"
-            key: "{{ wp_apache_ssl_key | default('ssl-cert-snakeoil.key') }}"
-            copycerts: '{{ wp_apache_ssl_copycerts | default(False) }}'
-            vhost_template: '{{ wp_apache_vhost_template | default(omit) }}'
-      apache2_ssl_cert_path:
-          "{{ wp_apache_ssl_cert_path | default('/etc/ssl/certs') }}"
-      apache2_ssl_key_path:
-          "{{ wp_apache_ssl_key_path | default('/etc/ssl/private') }}"
   tags: [install]
+  ansible.builtin.include_role:
+    name: apache2
+  vars:
+    apache2_packages: "{{ [libapache2_mod_version] }}"
+    apache2_modules: "{{ wp_apache_modules }}"
+    apache2_vhosts:
+      - name: "{{ wp_apache_hostname }}"
+        aliases: "{{ wp_apache_aliases }}"
+        http: true
+        https: "{{ wp_apache_ssl | default(False) }}"
+        cert: "{{ wp_apache_ssl_cert | default('ssl-cert-snakeoil.pem') }}"
+        key: "{{ wp_apache_ssl_key | default('ssl-cert-snakeoil.key') }}"
+        copycerts: "{{ wp_apache_ssl_copycerts | default(False) }}"
+        vhost_template: "{{ wp_apache_vhost_template | default(omit) }}"
+    apache2_ssl_cert_path: "{{ wp_apache_ssl_cert_path | default('/etc/ssl/certs') }}"
+    apache2_ssl_key_path: "{{ wp_apache_ssl_key_path | default('/etc/ssl/private') }}"
 
 # -----------------------------------------------------------------------
 # Install wordpress & configure apache
 # -----------------------------------------------------------------------
 
 - name: Install required packages
-  ansible.builtin.package:
-      name: '{{ wp_required_packages }}'
-      state: present
   tags: [install]
+  ansible.builtin.package:
+    name: "{{ wp_required_packages }}"
+    state: present
 
 - name: Install wp-cli
-  ansible.builtin.get_url:
-      url: https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-      dest: '{{ wp_cli_dir }}'
-      force: true
-      owner: root
-      group: root
-      mode: '0755'
   tags: [install]
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+    dest: "{{ wp_cli_dir }}"
+    force: true
+    owner: root
+    group: root
+    mode: "0755"
 
 - name: Get Wordpress versions
-  ansible.builtin.set_fact:
-      wp_current_version:
-          "{{ lookup('file', '{{ wp_path }}/wp-includes/version.php',
-          errors='ignore') | regex_search('wp_version=(.+)', '\\1') |
-          default('') }}"
-      wp_version: "{{ wp_version if (wp_version != 'latest') else
-          (lookup('ansible.builtin.url',
-          'https://api.wordpress.org/core/version-check/1.7/') |
-          from_json)['offers'][0]['version']\
-          \ }}"
   tags: [install]
+  ansible.builtin.set_fact:
+    wp_current_version: "{{ lookup('file', '{{ wp_path }}/wp-includes/version.php', errors='ignore') | regex_search('wp_version=(.+)', '\\1') | default('') }}"
+    wp_version:
+      "{{ wp_version if (wp_version != 'latest') else (lookup('ansible.builtin.url', 'https://api.wordpress.org/core/version-check/1.7/') | from_json)['offers'][0]['version']
+      }}"
 
 - name: Install WordPress
-  when: not wp_current_version == wp_version
   tags: [install]
+  when: not wp_current_version == wp_version
   block:
-      - name: Remove current directory
-        ansible.builtin.file:
-            path: '{{ wp_path }}'
-            state: absent
+    - name: Remove current directory
+      ansible.builtin.file:
+        path: "{{ wp_path }}"
+        state: absent
 
-      - name: Ensure directory exists
-        ansible.builtin.file:
-            path: '{{ wp_path }}'
-            state: directory
-            owner: '{{ wp_sys_user }}'
-            group: '{{ wp_sys_usergroup }}'
-            mode: '1777'
+    - name: Ensure directory exists
+      ansible.builtin.file:
+        path: "{{ wp_path }}"
+        state: directory
+        owner: "{{ wp_sys_user }}"
+        group: "{{ wp_sys_usergroup }}"
+        mode: "1777"
 
-      - name: Download and install WordPress {{ wp_version }}
-        become: true
-        become_user: '{{ wp_sys_user }}'
-        ansible.builtin.command:
-            cmd: >
-                wp-cli core download --path='{{ wp_path }}' --version='{{
-                wp_version }}' --skip-content --force --insecure --user='{{
-                wp_sys_user }}'
-            chdir: '{{ wp_path }}'
-        changed_when: false
-        notify: Restart apache2
-        tags: [install]
+    - name: Download and install WordPress {{ wp_version }}
+      tags: [install]
+      become: true
+      become_user: "{{ wp_sys_user }}"
+      ansible.builtin.command:
+        cmd: >
+          wp-cli core download
+
+          --path='{{ wp_path }}'
+          --version='{{ wp_version }}'
+          --skip-content
+          --skip-plugins
+          --skip-packages
+          --skip-themes
+          --force
+          --insecure
+          --user='{{ wp_sys_user }}'
+
+        chdir: "{{ wp_path }}"
+      changed_when: false
+      notify: Restart apache2
 
 - name: Wordpress config
-  ansible.builtin.template:
-      src: wp-config.php.j2
-      dest: '{{ wp_path }}/wp-config.php'
-      owner: '{{ wp_sys_user }}'
-      group: '{{ wp_sys_usergroup }}'
-      mode: '0644'
   tags: [install]
+  ansible.builtin.template:
+    src: wp-config.php.j2
+    dest: "{{ wp_path }}/wp-config.php"
+    owner: "{{ wp_sys_user }}"
+    group: "{{ wp_sys_usergroup }}"
+    mode: "0644"
 
 # -----------------------------------------------------------------------
 # Create content
 # -----------------------------------------------------------------------
 
 - name: Install wp-core
-  become: true
-  become_user: '{{ wp_sys_user }}'
-  ansible.builtin.command:
-      cmd: >
-          wp-cli core install --allow-root  --path='{{ wp_path }}' --url='{{
-          wp_host }}' --title='{{ wp_title }}' --admin_name='{{ wp_admin_name
-          }}' --admin_email='{{ wp_admin_email }}' --admin_password='{{
-          wp_admin_password }}'
-  changed_when: false
   tags: [install]
+  become: true
+  become_user: "{{ wp_sys_user }}"
+  ansible.builtin.command:
+    cmd: >
+      wp-cli core install
+
+      --allow-root
+      --path='{{ wp_path }}'
+      --url='{{ wp_host }}'
+      --title='{{ wp_title }}'
+      --admin_name='{{ wp_admin_name }}'
+      --admin_email='{{ wp_admin_email }}'
+      --admin_password='{{ wp_admin_password }}'
+      --skip-plugins
+      --skip-packages
+      --skip-themes
+
+  changed_when: false
 
 - name: Include clean site tasks
-  ansible.builtin.include_tasks:
-      file: wp_empty_site.yml
   tags: [config]
+  ansible.builtin.include_tasks:
+    file: wp_empty_site.yml
 
 - name: Include theme tasks
-  ansible.builtin.include_tasks:
-      file: wp_themes.yml
   tags: [config]
+  ansible.builtin.include_tasks:
+    file: wp_themes.yml
 
 - name: Include options tasks
-  ansible.builtin.include_tasks:
-      file: wp_options.yml
   tags: [config]
+  ansible.builtin.include_tasks:
+    file: wp_options.yml
 
 - name: Include plugin tasks
-  ansible.builtin.include_tasks:
-      file: wp_plugins.yml
   tags: [config]
+  ansible.builtin.include_tasks:
+    file: wp_plugins.yml
 
 - name: Include user tasks
-  ansible.builtin.include_tasks:
-      file: wp_users.yml
   tags: [config]
+  ansible.builtin.include_tasks:
+    file: wp_users.yml
 
 - name: Include categories tasks
-  ansible.builtin.include_tasks:
-      file: wp_categories.yml
   tags: [config]
+  ansible.builtin.include_tasks:
+    file: wp_categories.yml
 
 - name: Include posts tasks
-  ansible.builtin.include_tasks:
-      file: wp_create_posts.yml
   tags: [config]
+  ansible.builtin.include_tasks:
+    file: wp_create_posts.yml
 
 - name: Ensure correct permissions on upload folder
   ansible.builtin.file:
-      path: '{{ wp_path }}/wp-content/uploads'
-      state: directory
-      owner: '{{ wp_sys_user }}'
-      group: '{{ wp_sys_usergroup }}'
-      mode: '755'
+    path: "{{ wp_path }}/wp-content/uploads"
+    state: directory
+    owner: "{{ wp_sys_user }}"
+    group: "{{ wp_sys_usergroup }}"
+    mode: "755"
+
+- name: Include backup tasks
+  tags: [config]
+  ansible.builtin.include_tasks:
+    file: wp_backup.yml
