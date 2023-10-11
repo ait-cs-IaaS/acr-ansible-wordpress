@@ -1,50 +1,74 @@
 ---
 - name: Create posts
+  tags: [config]
   become: true
-  become_user: '{{ wp_sys_user }}'
+  become_user: "{{ wp_sys_user }}"
   ansible.builtin.command:
-      cmd: >
-          wp-cli  post create  --allow-root --path='{{ wp_path }}'
-          --post_content='{{ item.content }}' --post_author="$(wp-cli
-          --allow-root --path='{{ wp_path }}' user get {{ item.author }}
-          --field=ID)" --post_title='{{ item.title }}' --post_status="publish"
+    cmd: >
+      wp-cli post create
 
-          {% if item.user is defined %}
-            --user='{{ item.user }}'
-          {% endif %}
+      --allow-root
+      --path='{{ wp_path }}'
+      --post_content='{{ item.content }}'
+      --post_author="
+        $(wp-cli
+          --allow-root
+          --path='{{ wp_path }}' user get {{ item.author }}
+          --field=ID)
+          "
+      --post_title='{{ item.title }}'
+      --post_status="publish"
+      --skip-plugins
+      --skip-packages
+      --skip-themes
 
-          {% if item.category is defined %}
-            --post_category='{{ item.category }}'
-          {% endif %}
+      {% if item.user is defined %}
+        --user='{{ item.user }}'
+      {% endif %}
 
-          {% if item.date is defined %}
-            --post_date='{{ item.date }}'
-          {% endif %}
+      {% if item.category is defined %}
+        --post_category='{{ item.category }}'
+      {% endif %}
 
-          {% if item.post_type is defined %}
-            --post_type='{{ item.post_type }}'
-          {% endif %}
+      {% if item.date is defined %}
+        --post_date='{{ item.date }}'
+      {% endif %}
+
+      {% if item.post_type is defined %}
+        --post_type='{{ item.post_type }}'
+      {% endif %}
 
   changed_when: false
-  with_items: '{{ wp_posts }}'
+  with_items: "{{ wp_posts }}"
   when: wp_posts is defined
-  tags: [config]
 
 - name: Create meta for posts
+  tags: [config]
   become: true
-  become_user: '{{ wp_sys_user }}'
+  become_user: "{{ wp_sys_user }}"
   ansible.builtin.command:
-      cmd: >
-          wp-cli --allow-root --path='{{ wp_path }}' post meta update
-          "$(wp-cli  post list --allow-root --path='{{ wp_path }}' --name='{{
-          item.post_name }}' --field=ID
+    cmd: >
+      wp-cli post meta update
 
-          {% if item.post_type is defined %}
-            --post_type='{{ item.post_type }}'
-          {% endif %})"
+      --allow-root
+      --path='{{ wp_path }}' 
+      "$(wp-cli 
+        post list
+        --allow-root
+        --path='{{ wp_path }}'
+        --name='{{ item.post_name }}' 
+        --field=ID
+        --skip-plugins
+        --skip-packages
+        --skip-themes
 
-          '{{ item.key }}' '{{ item.value }}'
-  with_items: '{{ wp_posts_meta }}'
+        {% if item.post_type is defined %}
+          --post_type='{{ item.post_type }}'
+        {% endif %})"
+
+      '{{ item.key }}'
+      '{{ item.value }}'
+
+  with_items: "{{ wp_posts_meta }}"
   when: wp_posts_meta is defined
   changed_when: false
-  tags: [config]

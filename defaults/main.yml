@@ -8,8 +8,11 @@
 wp_sys_user: www-data
 wp_sys_usergroup: www-data
 wp_cli_dir: /usr/local/bin/wp-cli
-wp_required_packages:
-    [php7.2, php7.2-mysql, php7.2-gd, php7.2-ssh2, curl, php-zip, unzip]
+wp_required_packages: [php7.2, php7.2-mysql, php7.2-gd, php7.2-ssh2, curl, php-zip, unzip]
+
+wp_backup_path: /var/backups/
+wp_backup_sql: "{{ wp_backup_path }}/website_database.sql"
+wp_backup_files: "{{ wp_backup_path }}/website_files.gz"
 
 # -----------------------------------------------------------------------
 # Wordpress
@@ -36,7 +39,7 @@ wp_mysqldb_password: secret
 wp_mysqldb_dbname: wordpress_db
 wp_mysqldb_host: localhost
 wp_mysqldb_charset: utf8
-wp_mysqldb_collate: ''
+wp_mysqldb_collate: ""
 
 wp_auth_key: put your unique phrase here
 wp_secure_auth_key: put your unique phrase here
@@ -47,7 +50,7 @@ wp_secure_auth_salt: put your unique phrase here
 wp_logged_in_salt: put your unique phrase here
 wp_nonce_salt: put your unique phrase here
 wp_table_prefix: wp_
-wp_debug: 'false'
+wp_debug: "false"
 
 # -----------------------------------------------------------------------
 # Wordpress Content
@@ -56,10 +59,10 @@ wp_debug: 'false'
 wp_remove_samples: true
 
 wp_themes:
-    - { name: go, activate: true } # fblogging
+  - { name: go, activate: true } # fblogging
 
 wp_options:
-    blogdescription: '{{ wp_tagline }}'
+  blogdescription: "{{ wp_tagline }}"
 
 # wp_options_all:
 #   blogdescription: '{{ wp_tagline }}'
@@ -89,8 +92,8 @@ wp_posts_meta: []
 # apache setting
 libapache2_mod_version: libapache2-mod-php7.2 # Ubuntu 18.04
 wp_apache_modules:
-    - name: rewrite
-    - name: deflate
-    - name: headers
-    - name: ssl
-    - name: authz_host
+  - name: rewrite
+  - name: deflate
+  - name: headers
+  - name: ssl
+  - name: authz_host

@@ -1,12 +1,20 @@
 ---
 - name: Update Options
+  tags: [config]
   become: true
-  become_user: '{{ wp_sys_user }}'
+  become_user: "{{ wp_sys_user }}"
   ansible.builtin.command:
-      cmd: >
-          wp-cli option update --allow-root --path='{{ wp_path }}' '{{ item.key
-          }}' '{{ item.value }}'
-  with_dict: '{{ wp_options }}'
+    cmd: >
+      wp-cli option update
+
+      --allow-root
+      --path='{{ wp_path }}' 
+      '{{ item.key }}'
+      '{{ item.value }}'
+      --skip-plugins
+      --skip-packages
+      --skip-themes
+
+  with_dict: "{{ wp_options }}"
   when: item.value
   changed_when: false
-  tags: [config]
