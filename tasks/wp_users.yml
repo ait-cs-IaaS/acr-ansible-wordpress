@@ -1,36 +1,76 @@
 ---
-- name: Create User
+- name: Clear wp users
+  tags: [config]
   become: true
-  become_user: '{{ wp_sys_user }}'
+  become_user: "{{ wp_sys_user }}"
   ansible.builtin.command:
-      cmd: >
-          wp-cli  user create  --allow-root  --path='{{ wp_path }}'  --role='{{
-          item.role }}' --display_name='{{ item.displayname }}' --user_pass='{{
-          item.password }}' '{{ item.name }}'  '{{ item.email }}'
-  loop: '{{ wp_users }}'
+    cmd: >
+      wp-cli user delete 
+
+      "$(wp-cli user list --field=ID --allow-root --path='{{ wp_path }}')"
+
+      --allow-root
+      --path='{{ wp_path }}'
+      --yes
+
+  changed_when: false
+
+- name: Create User
+  tags: [config]
+  become: true
+  become_user: "{{ wp_sys_user }}"
+  ansible.builtin.command:
+    cmd: >
+      wp-cli user create
+      --allow-root
+      --path='{{ wp_path }}'
+      --role='{{ item.role }}'
+      --display_name='{{ item.displayname }}'
+      --user_pass='{{ item.password }}'
+      '{{ item.name }}'
+      '{{ item.email }}'
+
+  loop: "{{ wp_users }}"
   when: wp_users is defined
   register: check_users
   changed_when: "'Success' in check_users.stdout"
-  failed_when:
-      ('username is already registered' not in check_users.stderr) and
-      (check_users.rc > 0)
-  tags: [config]
+  failed_when: ('username is already registered' not in check_users.stderr) and (check_users.rc > 0)
 
 - name: Update Users
+  tags: [config]
   become: true
-  become_user: '{{ wp_sys_user }}'
+  become_user: "{{ wp_sys_user }}"
   ansible.builtin.command:
-      cmd: >
-          wp-cli  user update  --allow-root  --path='{{ wp_path }}'  {{
-          item.id_id | default(item.id_name, true) | default(item.id_email,
-          true) }} {{ (('{}{}'.format('--user_email=', item.new_email)) if
-          (item.new_email is defined) else ('')) }} {{
-          (('{}{}'.format('--role=', item.new_role)) if (item.new_role is
-          defined) else ('')) }} {{ (('{}{}'.format('--display_name=',
-          item.new_displayname)) if (item.new_displayname is defined) else (''))
-          }} {{ (('{}{}'.format('--user_pass=', item.new_password)) if
-          (item.new_password is defined) else ('')) }}
-  loop: '{{ wp_users_update }}'
+    cmd: >
+      wp-cli user update
+      --allow-root
+      --path='{{ wp_path }}'
+      {{ item.id_id | default(item.id_name, true) | default(item.id_email, true) }}
+
+      {{ (('{}{}'.format('
+        --user_email=', item.new_email))
+        if (item.new_email is defined)
+        else (''))
+      }} 
+
+      {{ (('{}{}'.format('
+        --role=', item.new_role))
+        if (item.new_role is defined)
+        else (''))
+      }} 
+
+      {{ (('{}{}'.format('
+        --display_name=',item.new_displayname))
+        if (item.new_displayname is defined)
+        else (''))
+      }} 
+
+      {{ (('{}{}'.format('
+        --user_pass=', item.new_password))
+        if (item.new_password is defined)
+        else (''))
+      }}
+
+  loop: "{{ wp_users_update }}"
   when: wp_users_update is defined
   changed_when: false
-  tags: [config]
