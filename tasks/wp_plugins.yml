@@ -1,34 +1,73 @@
 ---
 - name: Update plugins
-  become: true
-  become_user: '{{ wp_sys_user }}'
-  ansible.builtin.command:
-      cmd: >
-          wp-cli plugin update --allow-root --path='{{ wp_path }}' --all
   tags: [config]
+  become: true
+  become_user: "{{ wp_sys_user }}"
+  ansible.builtin.command:
+    cmd: >
+      wp-cli plugin update
+      --allow-root
+      --path='{{ wp_path }}'
+      --all
+      --skip-packages
+      --skip-themes
+
   when: wp_plugins_update | bool
   changed_when: false
 
 - name: Install plugins
+  tags: [config]
   become: true
-  become_user: '{{ wp_sys_user }}'
+  become_user: "{{ wp_sys_user }}"
   ansible.builtin.command:
-      cmd: >
-          wp-cli  plugin install {{ item.name }}  --user={{ wp_admin_name
-          }}  --allow-root  --path='{{ wp_path }}'
+    cmd: >
+      wp-cli  plugin install {{ item.name }}  
 
-          {% if item.version is defined %}
-            --version='{{ item.version }}'
-            --force
-          {% endif %}
+      --user={{ wp_admin_name }}  --allow-root  --path='{{ wp_path }}'
+       --skip-packages --skip-themes
 
-          {% if item.activate is defined and item.activate | bool %}
-            --activate
-            --activate-network
-          {% endif %}
+      {% if item.version is defined %}
+        --version='{{ item.version }}'
+        --force
+      {% endif %}
+
+      {% if item.activate is defined and item.activate | bool %}
+        --activate
+        --activate-network
+      {% endif %}
+
   environment:
-      WP_CLI_CACHE_DIR: /tmp/.wp-cli/cache
-  loop: '{{ wp_plugins }}'
+    WP_CLI_CACHE_DIR: /tmp/.wp-cli/cache
+  loop: "{{ wp_plugins }}"
   when: wp_plugins is defined
   changed_when: false
+
+- name: Set auto-updates on plugins
   tags: [config]
+  become: true
+  become_user: "{{ wp_sys_user }}"
+  ansible.builtin.command:
+    cmd: >
+      wp-cli  plugin auto-updates 
+
+      {% if item.auto_update is defined and item.auto_update | bool %}
+        enable
+      {% else %}
+        disable
+      {% endif %}
+
+      {{ item.name }}  
+
+      --user={{ wp_admin_name }}
+      --allow-root
+      --path='{{ wp_path }}'
+      --skip-packages
+      --skip-themes
+
+  environment:
+    WP_CLI_CACHE_DIR: /tmp/.wp-cli/cache
+  loop: "{{ wp_plugins }}"
+  when: wp_plugins is defined
+  register: check_update
+  changed_when: "'Success' in check_update.stdout"
+  failed_when: (' already disabled' not in check_update.stderr) and (check_update.rc > 0)
