@@ -15,26 +15,29 @@
 
   changed_when: false
 
-- name: Create User
+- name: Create wp users CSV
+  set_fact:
+    csv_content: |
+      user_login,user_email,display_name,role,user_pass
+      {% for user in wp_users %}
+      {{ user.name }},{{ user.email }},{{ user.displayname }},{{ user.role }},{{ user.password }}
+      {% endfor %}
+  when: wp_users is defined
+
+- name: Write temporarly CSV file
+  ansible.builtin.copy:
+    content: "{{ csv_content }}"
+    dest: /tmp/wpusers.csv
+
+- name: Create Users
   tags: [config]
   become: true
   become_user: "{{ wp_sys_user }}"
   ansible.builtin.command:
     cmd: >
-      wp-cli user create
+      wp-cli user import-csv /tmp/wpusers.csv
       --allow-root
       --path='{{ wp_path }}'
-      --role='{{ item.role }}'
-      --display_name='{{ item.displayname }}'
-      --user_pass='{{ item.password }}'
-      '{{ item.name }}'
-      '{{ item.email }}'
-
-  loop: "{{ wp_users }}"
-  when: wp_users is defined
-  register: check_users
-  changed_when: "'Success' in check_users.stdout"
-  failed_when: ('username is already registered' not in check_users.stderr) and (check_users.rc > 0)
 
 - name: Update Users
   tags: [config]
