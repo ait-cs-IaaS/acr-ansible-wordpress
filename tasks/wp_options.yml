@@ -8,8 +8,7 @@
       wp-cli option update
 
       --allow-root
-      --path='{{ wp_path }}' 
-      '{{ item.key }}'
+      --path='{{ wp_path }}'  '{{ item.key }}'
       '{{ item.value }}'
       --skip-plugins
       --skip-packages

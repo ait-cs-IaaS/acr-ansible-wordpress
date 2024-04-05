@@ -9,7 +9,6 @@ wp_sys_user: www-data
 wp_sys_usergroup: www-data
 wp_cli_dir: /usr/local/bin/wp-cli
 wp_required_packages: [php7.2, php7.2-mysql, php7.2-gd, php7.2-ssh2, curl, php-zip, unzip]
-
 wp_backup_path: /var/backups/
 wp_backup_sql: "{{ wp_backup_path }}/website_database.sql"
 wp_backup_files: "{{ wp_backup_path }}/website_files.gz"

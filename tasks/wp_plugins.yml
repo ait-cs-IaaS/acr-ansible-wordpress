@@ -5,12 +5,8 @@
   become_user: "{{ wp_sys_user }}"
   ansible.builtin.command:
     cmd: >
-      wp-cli plugin update
-      --allow-root
-      --path='{{ wp_path }}'
-      --all
-      --skip-packages
-      --skip-themes
+      wp-cli plugin update --allow-root --path='{{ wp_path }}' --all
+      --skip-packages --skip-themes
 
   when: wp_plugins_update | bool
   changed_when: false
@@ -21,9 +17,9 @@
   become_user: "{{ wp_sys_user }}"
   ansible.builtin.command:
     cmd: >
-      wp-cli  plugin install {{ item.name }}  
+      wp-cli plugin install {{ item.name }}
 
-      --user={{ wp_admin_name }}  --allow-root  --path='{{ wp_path }}'
+      --user={{ wp_admin_name }} --allow-root --path='{{ wp_path }}'
        --skip-packages --skip-themes
 
       {% if item.version is defined %}
@@ -48,7 +44,7 @@
   become_user: "{{ wp_sys_user }}"
   ansible.builtin.command:
     cmd: >
-      wp-cli  plugin auto-updates 
+      wp-cli plugin auto-updates
 
       {% if item.auto_update is defined and item.auto_update | bool %}
         enable
@@ -56,13 +52,10 @@
         disable
       {% endif %}
 
-      {{ item.name }}  
+      {{ item.name }}
 
-      --user={{ wp_admin_name }}
-      --allow-root
-      --path='{{ wp_path }}'
-      --skip-packages
-      --skip-themes
+      --user={{ wp_admin_name }} --allow-root --path='{{ wp_path }}'
+      --skip-packages --skip-themes
 
   environment:
     WP_CLI_CACHE_DIR: /tmp/.wp-cli/cache

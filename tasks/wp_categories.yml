@@ -5,10 +5,10 @@
   become_user: "{{ wp_sys_user }}"
   ansible.builtin.command:
     cmd: >
-      wp-cli --allow-root 
+      wp-cli --allow-root
 
-      --path='{{ wp_path }}' --description='{{
-      item.description }}' term create category '{{ item.name }}' --skip-plugins --skip-packages --skip-themes
+      --path='{{ wp_path }}' --description='{{ item.description }}' term create
+      category '{{ item.name }}' --skip-plugins --skip-packages --skip-themes
   register: category_result
   with_items: "{{ wp_categories }}"
   when: wp_categories is defined

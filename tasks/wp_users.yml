@@ -5,22 +5,20 @@
   become_user: "{{ wp_sys_user }}"
   ansible.builtin.command:
     cmd: >
-      wp-cli user delete 
+      wp-cli user delete
 
       "$(wp-cli user list --field=ID --allow-root --path='{{ wp_path }}')"
 
-      --allow-root
-      --path='{{ wp_path }}'
-      --yes
+      --allow-root --path='{{ wp_path }}' --yes
 
   changed_when: false
 
 - name: Create wp users CSV
-  set_fact:
+  ansible.builtin.set_fact:
     csv_content: |
       user_login,user_email,display_name,role,user_pass
       {% for user in wp_users %}
-      {{ user.name }},{{ user.email }},{{ user.displayname }},{{ user.role }},{{ user.password }}
+      {{ user.username }},{{ user.email }},{{ user.display_name }},{{ user.role }},{{ user.password }}
       {% endfor %}
   when: wp_users is defined
 
@@ -28,6 +26,7 @@
   ansible.builtin.copy:
     content: "{{ csv_content }}"
     dest: /tmp/wpusers.csv
+    mode: "0644"
 
 - name: Create Users
   tags: [config]
@@ -35,9 +34,9 @@
   become_user: "{{ wp_sys_user }}"
   ansible.builtin.command:
     cmd: >
-      wp-cli user import-csv /tmp/wpusers.csv
-      --allow-root
-      --path='{{ wp_path }}'
+      wp-cli user import-csv /tmp/wpusers.csv --allow-root --path='{{ wp_path
+      }}'
+  changed_when: false
 
 - name: Update Users
   tags: [config]
@@ -45,28 +44,26 @@
   become_user: "{{ wp_sys_user }}"
   ansible.builtin.command:
     cmd: >
-      wp-cli user update
-      --allow-root
-      --path='{{ wp_path }}'
-      {{ item.id_id | default(item.id_name, true) | default(item.id_email, true) }}
+      wp-cli user update --allow-root --path='{{ wp_path }}' {{ item.id_id |
+      default(item.id_name, true) | default(item.id_email, true) }}
 
       {{ (('{}{}'.format('
         --user_email=', item.new_email))
         if (item.new_email is defined)
         else (''))
-      }} 
+      }}
 
       {{ (('{}{}'.format('
         --role=', item.new_role))
         if (item.new_role is defined)
         else (''))
-      }} 
+      }}
 
       {{ (('{}{}'.format('
         --display_name=',item.new_displayname))
         if (item.new_displayname is defined)
         else (''))
-      }} 
+      }}
 
       {{ (('{}{}'.format('
         --user_pass=', item.new_password))

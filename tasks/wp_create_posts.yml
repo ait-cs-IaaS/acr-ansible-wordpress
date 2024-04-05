@@ -7,20 +7,15 @@
     cmd: >
       wp-cli post create
 
-      --allow-root
-      --path='{{ wp_path }}'
-      --post_content='{{ item.content }}'
+      --allow-root --path='{{ wp_path }}' --post_content='{{ item.content }}'
       --post_author="
         $(wp-cli
           --allow-root
           --path='{{ wp_path }}' user get {{ item.author }}
           --field=ID)
           "
-      --post_title='{{ item.title }}'
-      --post_status="publish"
-      --skip-plugins
-      --skip-packages
-      --skip-themes
+      --post_title='{{ item.title }}' --post_status="publish" --skip-plugins
+      --skip-packages --skip-themes
 
       {% if item.user is defined %}
         --user='{{ item.user }}'
@@ -50,13 +45,11 @@
     cmd: >
       wp-cli post meta update
 
-      --allow-root
-      --path='{{ wp_path }}' 
-      "$(wp-cli 
+      --allow-root --path='{{ wp_path }}'  "$(wp-cli
         post list
         --allow-root
         --path='{{ wp_path }}'
-        --name='{{ item.post_name }}' 
+        --name='{{ item.post_name }}'
         --field=ID
         --skip-plugins
         --skip-packages
@@ -66,8 +59,7 @@
           --post_type='{{ item.post_type }}'
         {% endif %})"
 
-      '{{ item.key }}'
-      '{{ item.value }}'
+      '{{ item.key }}' '{{ item.value }}'
 
   with_items: "{{ wp_posts_meta }}"
   when: wp_posts_meta is defined
