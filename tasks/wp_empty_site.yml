@@ -1,22 +1,4 @@
 ---
-- name: Remove sample content
-  tags: [config]
-  become: true
-  become_user: "{{ wp_sys_user }}"
-  ansible.builtin.command:
-    cmd: >
-      wp-cli post empty
-
-      --allow-root
-      --path='{{ wp_path }}'
-      --yes
-      --uploads
-      --skip-plugins
-      --skip-packages
-      --skip-themes
-
-  when: wp_remove_samples
-  changed_when: false
 
 - name: Get posts to remove
   tags: [config]
