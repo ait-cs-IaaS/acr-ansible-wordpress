@@ -1,5 +1,4 @@
 ---
-
 - name: Get posts to remove
   tags: [config]
   become: true

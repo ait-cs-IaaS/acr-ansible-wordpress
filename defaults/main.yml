@@ -99,7 +99,7 @@ wp_options:
 wp_plugins_update: true
 
 # wp_users:
-#  - {name: 'x', displayname: 'x', email: 'x', password: 'x', role: x}
+#  - {name: 'x', displayname: 'x', email: 'x', password: 'x', wp_role: x}
 
 # wp_users_update:
 #  - {id_id: 'x' || id_name: 'x' || id_email: 'x' &&

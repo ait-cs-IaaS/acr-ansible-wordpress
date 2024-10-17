@@ -18,7 +18,7 @@
     csv_content: |
       user_login,user_email,display_name,role,user_pass
       {% for user in wp_users %}
-      {{ user.username }},{{ user.email }},{{ user.display_name }},{{ user.role }},{{ user.password }}
+      {{ user.username }},{{ user.email }},{{ user.display_name }},{{ user.wp_role }},{{ user.password }}
       {% endfor %}
   when: wp_users is defined
 
@@ -34,8 +34,7 @@
   become_user: "{{ wp_sys_user }}"
   ansible.builtin.command:
     cmd: >
-      wp-cli user import-csv /tmp/wpusers.csv --allow-root --path='{{ wp_path
-      }}'
+      wp-cli user import-csv /tmp/wpusers.csv --allow-root --path='{{ wp_path }}'
   changed_when: false
 
 - name: Update Users
