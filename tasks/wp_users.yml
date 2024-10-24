@@ -73,3 +73,8 @@
   loop: "{{ wp_users_update }}"
   when: wp_users_update is defined
   changed_when: false
+
+- name: Remove temporarly CSV file
+  ansible.builtin.file:
+    path: /tmp/wpusers.csv
+    state: absent
