@@ -7,7 +7,7 @@
     cmd: >
       wp-cli post create
 
-      --allow-root --path='{{ wp_path }}' --post_content='{{ item.content }}'
+      --allow-root --path='{{ wp_path }}' --post_content={{ item.content | quote }}
       --post_author="
         $(wp-cli
           --allow-root
